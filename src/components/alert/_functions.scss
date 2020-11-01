@@ -1,0 +1,12 @@
+@use 'sass:map';
+@import '../../variables';
+
+@function getTypeFromBg($bg){
+    @each $key in $special-color-keys {
+        $theme_col_bg:map.get($theme-colors,$key);
+        @if $theme_col_bg == $bg{
+            @return $key;
+        }
+    }
+}
+

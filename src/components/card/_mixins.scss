@@ -1,0 +1,90 @@
+@use 'sass:list';
+@import 'functions';
+
+@mixin card {
+    padding: 1rem 1.5rem;
+    border: 1px solid rgba(#000000,.15);
+    border-radius: .25rem;
+}
+
+@mixin card-header {
+    margin-top: -1rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding: .75rem;
+    background-color: lightgrey;
+    border-radius: .25rem .25rem 0 0;
+}
+
+@mixin card-body {
+    padding: 1rem 0;
+}
+
+@mixin card-footer {
+    margin-bottom: -1rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding: .75rem;
+    background-color: lightgrey;
+    border-radius: 0 0 .25rem .25rem;
+}
+
+@mixin b-radius-no {
+    border-radius: 0;
+}
+
+@mixin b-radius-left-top {
+    border-radius: .25rem 0 0 0;
+}
+
+@mixin b-radius-right-top {
+    border-radius: 0 .25rem 0 0;
+}
+
+@mixin b-radius-left-bot {
+    border-radius: 0 0 0 .25rem;
+}
+
+@mixin b-radius-right-bot {
+    border-radius: 0 0 .25rem 0;
+}
+
+@mixin b-radius-left {
+    border-radius: .25rem 0 0 .25rem;
+}
+
+@mixin b-radius-top {
+    border-radius: .25rem .25rem 0 0;
+}
+
+@mixin b-radius-bot {
+    border-radius: 0 0 .25rem .25rem;
+}
+
+@mixin b-radius-right {
+    border-radius: 0 .25rem .25rem 0;
+}
+
+@mixin b-radius($direction,$type){
+    @if($direction == "left"){
+        @if($type == "img"){
+            @include b-radius-left();
+        }
+        @if($type == "header"){
+            @include b-radius-right-top();
+        }
+    }
+    @if($direction == "right"){
+        @if($type == "img"){
+            @include b-radius-right();
+        }
+        @if($type == "header"){
+            @include b-radius-left-top();
+        }
+    }
+    @if($direction == "top"){
+        @if($type == "header"){
+            @include b-radius-no();
+        }
+    }
+}

@@ -1,0 +1,29 @@
+@use 'sass:map';
+@import '../../variables';
+
+@function getOrder($direction){
+    @if $direction == 'left' {
+        @return -1; 
+    }
+    @if $direction == 'right' {
+        @return 1;
+    }
+    @return 0
+};
+
+@function getDisplay($direction){
+    @if $direction == 'top' {
+        @return block;
+    }
+    @return flex;
+};
+
+@function isFlex($direction){
+    @if $direction == 'left' {
+        @return 1; 
+    }
+    @if $direction == 'right' {
+        @return 1;
+    }
+    @return 0;
+};

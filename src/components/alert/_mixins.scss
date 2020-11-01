@@ -1,0 +1,30 @@
+@use 'sass:list';
+@import 'functions';
+
+@mixin alert_default {
+    padding: 1rem;
+    font-weight: 600;
+}
+
+@mixin alert_type($bg) {
+    border-left: 3px solid darken($color: $bg, $amount: 5);
+    background-color: rgba($color: $bg, $alpha: .25);
+    @if getTypeFromBg($bg) == "warning"   {
+        color: darken($color: $bg, $amount: 10);
+    }@else{
+        @if getTypeFromBg($bg) == "light"{
+            color:  lighten($color: #53575c, $amount: 15);
+        }@else{
+            color:  darken($color: $bg, $amount: 3);
+        }
+       
+    }
+    
+}
+
+@mixin alert-link{
+    text-decoration: none;
+    font-weight: 700;
+    color: inherit;
+    cursor: pointer;
+}

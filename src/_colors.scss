@@ -1,0 +1,24 @@
+@use 'sass:map';
+@import 'variables';
+
+@function color($key){
+    @return map.get($theme-colors,$key);
+}
+
+@each $key in $color-keys{
+    .text-#{$key}{
+        color: color($key)!important;
+    }
+    .bg-#{$key}{
+        background-color: color($key)!important;
+    }
+}
+
+@each $key in $special-color-keys{
+    .text-#{$key}{
+        color: var(--#{$key},#{color($key)})!important;
+    }
+    .bg-#{$key}{
+        background-color: var(--#{$key},#{color($key)})!important;
+    }
+}
