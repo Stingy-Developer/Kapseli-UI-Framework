@@ -1,2 +1,2 @@
-# Capsule-CSS-Framework
+# Cover-CSS-Framework
  
