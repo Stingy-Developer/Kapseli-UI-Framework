@@ -1,0 +1,76 @@
+/*!
+ * Bootstrap v5.0.2 (https://getbootstrap.com/)
+ * Copyright 2011-2021 The Bootstrap Authors
+ * Copyright 2011-2021 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+// scss-docs-start import-stack
+// Configuration
+@import "functions";
+
+$primary: #2f3136;
+$secondary: #36393f;
+$dark: #202225;
+$gray-600: #b9bbbe;
+$gray-800: #8e9297;
+$enable-gradients: false;
+$enable-negative-margins: false;
+$enable-important-utilities: false;
+
+@import "variables";
+@import "mixins";
+@import "utilities";
+
+// Layout & components
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "containers";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "nav";
+// @import "navbar";
+@import "card";
+// @import "accordion";
+@import "breadcrumb";
+// @import "pagination";
+@import "badge";
+@import "alert";
+// @import "progress";
+@import "list-group";
+// @import "close";
+// @import "toasts";
+@import "modal";
+// @import "tooltip";
+// @import "popover";
+// @import "carousel";
+@import "spinners";
+// @import "offcanvas";
+
+// Helpers
+// @import "helpers";
+
+// Utilities
+// @import "utilities/api";
+// scss-docs-end import-stack
+
+.ks-list-group{
+    @extend .list-group;
+}
+
+.ks-list-group-item{
+    @extend .list-group-item;
+    background-color: transparent;
+    color: $gray-800;
+    border: 0;
+    .active{
+        background-color: $primary;
+    }
+}

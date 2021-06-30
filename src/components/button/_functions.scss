@@ -1,6 +1,0 @@
-@use 'sass:map';
-@import '../../variables';
-
-@function getBtnColor($key){
-    @return map.get($theme-colors,$key);
-}
