@@ -1,13 +1,5 @@
-const { Storage } = require("./src/storage/index");
+const { m, createElement, patch } = require('million');
 
-try {
-    let x = new Storage()
-    console.log(x.getCurrent() )
+const app = createElement(m('div', { id: 'app' }, ['Hello World']));
 
-    x.getStorages()
-    x.setCurrent("remote")
-    console.log(x.getCurrent() )
-
-} catch (error) {
-    console.log(error);
-}
+console.log(app);

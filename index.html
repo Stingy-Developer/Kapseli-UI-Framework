@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class="container" style="height: 150px;margin-bottom:2rem;" @click="world">
+            <div class="col">
+                <h1><data v-data="hello"></data></h1>
+                <data v-data="hello"></data>
+            </div>
+        </div>
+		<div class="container" style="height: 150px;margin-bottom:2rem;">
+            <div class="col">
+                <h1 @click="p"><data v-data="hello"></data></h1>
+                <data v-data="hello"></data>
+            </div>
+        </div>
+		<div class="container" style="height: 150px;margin-bottom:2rem;">
+            <div class="col">
+                <h1><data v-data="hello"></data></h1>
+                <data v-data="hello"></data>
+            </div>
+        </div>
+		<div class="container" style="height: 150px;margin-bottom:2rem;">
+            <div class="col">
+                <h1><data v-data="hello"></data></h1>
+                <data v-data="hello"></data>
+            </div>
+        </div>
+		<div class="container" style="height: 150px;margin-bottom:2rem;">
+            <div class="col">
+                <h1><data v-data="hello"></data></h1>
+                <data v-data="hello"></data>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./dist/bundle.js"></script>
+
+    <script>
+        let x = new VDom({
+            el:"#app",
+            data:{
+                hello:"Merhaba"
+            },
+            methods:{
+                world(){
+                    alert("Worlds");
+                },
+                p(){
+                    console.log("waowww")
+                }
+            }
+        })
+        x.addDirective("@click",{render:function(el,cb){el.addEventListener("click",cb)}})
+        x.render();
+
+
+    </script>
+</body>
+</html>
