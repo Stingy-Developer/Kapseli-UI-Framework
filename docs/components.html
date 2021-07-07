@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapseli Components</title>
+
+    <link rel="stylesheet" href="./assets/css/kapseli.min.css">
+</head>
+<body style="padding: 5rem;">
+  <h1>Kapseli Components</h1>
+  <h3>Buttons</h3>
+    <a href="#" class="btn btn-primary">Primary</a>
+    <a href="#" class="btn btn-secondary">Secondary</a>
+    <a href="#" class="btn btn-success">Success</a>
+    <a href="#" class="btn btn-danger">Danger</a>
+    <a href="#" class="btn btn-info">Info</a>
+    <a href="#" class="btn btn-warning">Warning</a>
+    <a href="#" class="btn btn-light">Light</a>
+    <a href="#" class="btn btn-dark">Dark</a>
+
+    <br><br><br>
+<h3>Collapse</h3>
+    <p>
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Link with href
+        </a>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Button with data-bs-target
+        </button>
+      </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        </div>
+      </div>
+      <br><br><br>
+<h3>List Group</h3>
+      <ul class="list-group">
+        <li class="list-group-item active">An item</li>
+        <li class="list-group-item">A second item</li>
+        <li class="list-group-item">A third item</li>
+        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item active">And a fifth one</li>
+      </ul>
+      <br><br><br>
+      <h3>Action List Group</h3>
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+          The current link item
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+        <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+        <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+        <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">A disabled link item</a>
+      </div>
+      
+      <br><br><br>
+      <h3>Alerts</h3>
+      <div class="alert alert-primary" role="alert">
+        A simple primary alert—check it out!
+      </div>
+      <div class="alert alert-secondary" role="alert">
+        A simple secondary alert—check it out!
+      </div>
+      <div class="alert alert-success" role="alert">
+        A simple success alert—check it out!
+      </div>
+      <div class="alert alert-danger" role="alert">
+        A simple danger alert—check it out!
+      </div>
+      <div class="alert alert-warning" role="alert">
+        A simple warning alert—check it out!
+      </div>
+      <div class="alert alert-info" role="alert">
+        A simple info alert—check it out!
+      </div>
+      <div class="alert alert-light" role="alert">
+        A simple light alert—check it out!
+      </div>
+      <div class="alert alert-dark" role="alert">
+        A simple dark alert—check it out!
+      </div>
+
+      <br><br><br>
+      <h3>Badges</h3>
+        <h3>Example heading <span class="badge badge-primary-pill">1</span></h3>
+        <h3>Example heading <span class="badge badge-secondary-pill">1</span></h3>
+        <h3>Example heading <span class="badge badge-success-pill">1</span></h3>
+        <h4>Example heading <span class="badge badge-warning-pill">1</span></h4>
+        <h5>Example heading <span class="badge badge-info-pill">1</span></h5>
+        <h6>Example heading <span class="badge badge-secondary">1</span></h6>
+
+        <br><br><br>
+        <h3>Breadcrumb</h3>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Library</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+          </nav>
+
+          <br><br><br>
+          <h3>Button Group</h3>
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-primary">Left</button>
+          <button type="button" class="btn btn-primary">Middle</button>
+          <button type="button" class="btn btn-primary">Right</button>
+        </div>
+
+        <br><br><br>
+        <h3>Card</h3>
+
+        <div class="card" style="width: 18rem;">
+          <img src="https://avatars.githubusercontent.com/u/59289764?v=4" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+        <br><br><br>
+        <h3>Dropdown</h3>
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+
+        <br><br><br>
+        <h3>Navs</h3>
+        <h5>Vertical Navs</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+        <h5>Horizontal Navs</h5>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+
+        <br><br><br>
+        <h3>Spinner</h3>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div style="padding: 5rem;" class="spinner-parent">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, libero et! Molestiae atque expedita minus!
+              <div class="spinner-container">
+                  <div class="spinner spinner-border spinner-danger" role="status">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div style="padding: 5rem;" class="spinner-parent">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, libero et! Molestiae atque expedita minus!
+              <div class="spinner-container">
+                  <div class="spinner spinner-grow spinner-light" role="status">
+                  </div>
+                </div>
+              </div>
+              
+
+              
+            </div>
+          </div>
+        </div>
+        
+        <br><br><br>
+        <h3>Form Inputs</h3>
+
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Default file input example</label>
+          <input class="form-control" type="file" id="formFile">
+        </div>
+        <div class="mb-3">
+          <label for="formFileMultiple" class="form-label">Multiple files input example</label>
+          <input class="form-control" type="file" id="formFileMultiple" multiple>
+        </div>
+        <div class="mb-3">
+          <label for="exampleDataList" class="form-label">Datalist example</label>
+          <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+          <datalist id="datalistOptions">
+            <option value="San Francisco">
+            <option value="New York">
+            <option value="Seattle">
+            <option value="Los Angeles">
+            <option value="Chicago">
+          </datalist>
+        </div>
+        <br><br>
+        <select class="form-select" aria-label="Default select example">
+          <option selected>Open this select menu</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+<br><br>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">
+            Default radio
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+          <label class="form-check-label" for="flexRadioDefault2">
+            Default checked radio
+          </label>
+        </div>
+
+        <br><br>
+
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+          <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDisabled" disabled>
+          <label class="form-check-label" for="flexSwitchCheckDisabled">Disabled switch checkbox input</label>
+        </div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDisabled" checked disabled>
+          <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">Disabled checked switch checkbox input</label>
+        </div>
+
+        <br><br>
+        <label for="customRange1" class="form-label">Example range</label>
+        <input type="range" class="form-range" id="customRange1">
+
+        <br><br>
+        <label for="disabledRange" class="form-label">Disabled range</label>
+        <input type="range" class="form-range" id="disabledRange" disabled>
+
+        <br><br><br>
+        <h3>Tabs</h3>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Active</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Dropdown</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Separated link</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
