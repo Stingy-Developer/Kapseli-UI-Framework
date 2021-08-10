@@ -1,4 +1,4 @@
-const { m, createElement, patch, className, style } = require('million');
+import { m,createElement,patch,className,style } from "../compiler/index";
 import { setVFor } from "../vdom/generators/v-for";
 import { setVIf } from "../vdom/generators/v-if";
 
@@ -65,7 +65,7 @@ class VDom{
         for (let i = 0; i < attr.length; i++) {
             const at = attr[i];
 
-            if(at.name == "class"){
+            if(at.name == "classlist"){
                 attrs["className"] = className( this.__attr_class(at.value) )
             }else if(at.name == "style"){
                 attrs["style"] = style( this.__attr_style(at.value) )
@@ -104,6 +104,7 @@ class VDom{
         return this.$directives[id] ? this.$directives[id] : false;
     }
 
+    // deprecated 'renderDirectives' function
     renderDirectives(el,attr,vdom){
 
         this.throwKeyError(el,'el');
@@ -134,6 +135,7 @@ class VDom{
             }
         }
     }
+
 
     addComponent(tag,component){
         this.$components[tag] = component;
