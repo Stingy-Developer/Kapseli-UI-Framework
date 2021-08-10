@@ -12,9 +12,7 @@
 <body>
     <div id="app">
   <btn text="show" icon="alarm"></btn>
-  <btn1 text="show" icon="alarm"></btn1>
-  <btn2 text="show" icon="alarm"></btn2>
-  <btn3 text="show" icon="alarm"></btn3>
+  <btn1 v-if="show" text="show" icon="alarm"></btn1>
 
     <button @click="world">Good</button>
 
@@ -69,14 +67,16 @@ let b = new Button("","",function(e){
 });
 
 x.addComponent("BTN",b);
+x.addComponent("BTN1",b);
+
 
 x.render();
 
 
-//         var offcanvasElementList = [].slice.call(document.querySelectorAll('.panel'))
-// var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
-//   return new bootstrap.Offcanvas(offcanvasEl)
-// })
+        var offcanvasElementList = [].slice.call(document.querySelectorAll('.panel'))
+ var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
+  return new bootstrap.Offcanvas(offcanvasEl)
+})
 
 
 

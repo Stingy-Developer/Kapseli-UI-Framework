@@ -2,6 +2,11 @@ import { m,createElement,patch,className,style } from "../compiler/index";
 import { setVFor } from "../vdom/generators/v-for";
 import { setVIf } from "../vdom/generators/v-if";
 
+/**
+ * TODO:         attrs["data-object-id"] = attrs["data-object-id"] ? attrs["data-object-id"] : Math.random().toString(36).substr(2,7);
+ * To improve performance put object token. 
+ */
+
 class VDom{
     constructor(conf){
 
@@ -73,6 +78,7 @@ class VDom{
                 attrs[at.name] = at.value;
             }
         }
+
         return attrs;
     }
 
@@ -103,39 +109,6 @@ class VDom{
     getDirective(id){
         return this.$directives[id] ? this.$directives[id] : false;
     }
-
-    // deprecated 'renderDirectives' function
-    renderDirectives(el,attr,vdom){
-
-        this.throwKeyError(el,'el');
-        this.throwKeyError(attr,'attr');
-        this.throwKeyError(vdom,'vdom');
-
-        for (const key in attr) {
-            if (Object.hasOwnProperty.call(attr, key)) {
-                if(!this.getDirective( key )){
-                    this.addDirective(key,{render:function(el,cb){el.addEventListener(key.substr(1),cb)}})
-                }
-                const direc = this.getDirective( key );
-                if(direc){
-                    this.throwKeyError(direc.render,'directive.render()');
-                    direc.render(el, this.getMethod( attr[key] ) );
-                }
-                
-            }
-        }
-    
-        if(el && el.nodeName != "#text"){
-            for (let i = 0; i < el.childNodes.length; i++) {
-                this.renderDirectives(
-                    el.childNodes[i],
-                    vdom.children[i].$directives ? vdom.children[i].$directives : {},
-                    vdom.children[i]
-                );    
-            }
-        }
-    }
-
 
     addComponent(tag,component){
         this.$components[tag] = component;
@@ -229,19 +202,14 @@ class VDom{
 
             this.$current_vdom = this.renderObject(renderedvdom);
             this.app = createElement( 
-                m( this.$current_vdom.tag, 
-                    this.$current_vdom.props, 
-                    this.$current_vdom.children
-                    ) 
+               this.$current_vdom,this 
                 );
             this.el.parentElement.replaceChild(this.app,this.el);
-            this.renderDirectives(this.app, this.$current_vdom.$directives,this.$current_vdom)
         }else{
             renderedvdom = this.renderGenerators(this.$vdom);
             let vdom = this.renderObject(renderedvdom);
-            patch(this.app,vdom,this.$current_vdom);
+            patch(this.app,vdom,this.$current_vdom,this);
             this.$current_vdom = vdom;
-            this.renderDirectives(this.app, this.$current_vdom.$directives,this.$current_vdom)
         }
 
     }
@@ -266,6 +234,7 @@ class VDom{
                     obj["$directives"][prop] = obj.props[prop];
                 }
             }
+        
         }
         
         if(obj.tag == "DATA"){
@@ -286,6 +255,7 @@ class VDom{
 
     render(){
         this.renderVDom();
+        console.log(this.$vdom.props["data-object-id"])
     }
 }
 

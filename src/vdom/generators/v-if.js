@@ -8,8 +8,12 @@ export function setVIf(obj){
         } catch (error) {
             value = expression;
         }
+        console.log(value)
         if(!value){
-            vdom.props.style = "display:none!important;" + vdom.props.style; 
+            vdom.prevTag = vdom.tag;
+            vdom.tag = "COMMENT";
+        }else{
+            vdom.tag = vdom.prevTag ? vdom.prevTag : vdom.tag;
         }
     });
 }

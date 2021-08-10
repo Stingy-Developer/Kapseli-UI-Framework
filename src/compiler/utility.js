@@ -1,4 +1,4 @@
-const className = (classList_obj) => {
+const className = (classList_obj = {}) => {
     let enable_classes = [];
     for (const klass in classList_obj) {
         if (Object.hasOwnProperty.call(classList_obj, klass)) {
