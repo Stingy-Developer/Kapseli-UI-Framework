@@ -2,6 +2,7 @@ class Panel{
     constructor(config){
         this.config = config;
         this.panelConfig = config.panel ? config.panel : {};
+        this.event = config.Event;
     }
 
     getAll(){
@@ -44,7 +45,13 @@ class Panel{
                 heigth:"auto",
                 width:"auto"
             },
-        }
+        };
+        this.event.register(`panel:${panelID}:show`);
+        this.event.register(`panel:${panelID}:hide`);
+        this.event.register(`panel:${panelID}:show:before`);
+        this.event.register(`panel:${panelID}:hide:before`);
+        this.event.register(`panel:${panelID}:show:after`);
+        this.event.register(`panel:${panelID}:hide:after`);
     }
 
     isShow(panel_id){
@@ -75,3 +82,5 @@ class Panel{
         }
     }
 }
+
+export { Panel }

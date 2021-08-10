@@ -1,6 +1,6 @@
-class Plugin{
+export class Plugin{
     constructor(){
-        this.plugins = [];
+        this.plugins = {};
     }
     add(name,plugin){
         if(name){
@@ -16,5 +16,3 @@ class Plugin{
         return this.plugins;
     }
 };
-
-module.exports = { Plugin }

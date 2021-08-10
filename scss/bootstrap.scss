@@ -9,6 +9,7 @@
 // Configuration
 @import "functions";
 
+
 $primary: #2f3136;
 $secondary: #36393f;
 $dark: #202225;
@@ -18,6 +19,27 @@ $enable-gradients: false;
 $enable-negative-margins: false;
 $enable-important-utilities: false;
 
+
+$card-bg: $secondary;
+$card-color: white;
+$body-bg: #202225;
+$breadcrumb-active-color: white;
+$headings-color: white;
+$body-color: white;
+$input-border-color: $secondary;
+$input-bg: $body-bg;
+$form-file-button-color: $gray-800;
+$form-file-button-bg: $secondary;            
+$form-file-button-hover-bg: $primary;
+$form-check-input-border: 1px solid #97989b;
+$form-range-thumb-bg: white;
+$form-range-track-bg: $secondary;
+$nav-tabs-border-color: $secondary;
+$nav-tabs-link-active-border-color: $secondary $secondary $body-bg;
+$nav-tabs-link-hover-border-color:  $secondary $secondary $nav-tabs-border-color;
+$nav-tabs-link-active-color: white;
+$offcanvas-bg-color: $body-bg;
+$btn-close-color: white;
 @import "variables";
 @import "mixins";
 @import "utilities";
@@ -43,16 +65,16 @@ $enable-important-utilities: false;
 // @import "pagination";
 @import "badge";
 @import "alert";
-// @import "progress";
+@import "progress";
 @import "list-group";
-// @import "close";
-// @import "toasts";
+@import "close";
+@import "toasts";
 @import "modal";
 // @import "tooltip";
 // @import "popover";
 // @import "carousel";
 @import "spinners";
-// @import "offcanvas";
+@import "panel";
 
 // Helpers
 // @import "helpers";
@@ -61,16 +83,124 @@ $enable-important-utilities: false;
 // @import "utilities/api";
 // scss-docs-end import-stack
 
-.ks-list-group{
-    @extend .list-group;
-}
 
-.ks-list-group-item{
-    @extend .list-group-item;
+
+.list-group-item{
     background-color: transparent;
     color: $gray-800;
     border: 0;
+
+    &.list-group-item-action:hover{
+        background-color: $secondary;
+        color:$gray-600;
+    }
+
+    &.list-group-item-action.disabled{
+        background-color: transparent;
+        color: $gray-700;
+    }
+
     .active{
         background-color: $primary;
     }
+
+    .disabled{
+        background-color: transparent;
+        color: $gray-700;
+    }
 }
+
+$badge-bg-scale: -1%;
+
+@each $state, $value in $theme-colors {
+    $badge-background: shift-color($value, $badge-bg-scale);
+    .badge-#{$state},.badge-#{$state}-pill {
+        background-color: $badge-background;
+    }
+    .badge-#{$state}-pill {
+        border-radius: 50rem;
+    }
+    .alert-#{$state}{
+        background-color: rgba($color: $value, $alpha: 0.6);
+        color: white;
+    }
+}
+
+a,.nav-link {
+    color: $gray-600;
+    text-decoration: none;
+
+    &.disabled{
+        color: $gray-700;
+    }
+    &:hover{
+        color: $gray-300;
+    }
+}
+
+.dropdown-menu{
+    color: white;
+    padding: 0;
+    background-color: #36393f;
+}
+
+.dropdown-item{
+    color:white;
+
+    &:hover{
+        background-color: $primary;
+        color:white;
+    }
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.spinner-parent{
+    position: relative;
+}
+
+.spinner-container{
+    width: 100%;
+    display: flex;
+    height: 100%;
+    background: rgba(55,55,55,0.8);
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    .spinner{
+        margin: auto;
+    }
+}
+
+@each $state, $value in $theme-colors {
+    .spinner-#{$state}{
+        color: $value;
+    }
+}
+
+.form-control{
+    background-color: $body-bg;
+    border-color: $secondary;
+
+    &:focus{
+        background-color: $body-bg;
+    }
+
+}
+
+.form-switch .form-check-input{
+    background-image: escape-svg($form-switch-focus-bg-image);
+    border-color: #97989b;
+}
+
+.alert{
+    border: none;
+}
+
+.panel-container{
+    position: relative;
+}
+

@@ -1,4 +1,4 @@
-.offcanvas {
+.panel {
   position: fixed;
   bottom: 0;
   z-index: $zindex-offcanvas;
@@ -14,7 +14,7 @@
   @include transition(transform $offcanvas-transition-duration ease-in-out);
 }
 
-.offcanvas-header {
+.panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,18 +28,18 @@
   }
 }
 
-.offcanvas-title {
+.panel-title {
   margin-bottom: 0;
   line-height: $offcanvas-title-line-height;
 }
 
-.offcanvas-body {
+.panel-body {
   flex-grow: 1;
   padding: $offcanvas-padding-y $offcanvas-padding-x;
   overflow-y: auto;
 }
 
-.offcanvas-start {
+.panel-start {
   top: 0;
   left: 0;
   width: $offcanvas-horizontal-width;
@@ -47,7 +47,7 @@
   transform: translateX(-100%);
 }
 
-.offcanvas-end {
+.panel-end {
   top: 0;
   right: 0;
   width: $offcanvas-horizontal-width;
@@ -55,7 +55,7 @@
   transform: translateX(100%);
 }
 
-.offcanvas-top {
+.panel-top {
   top: 0;
   right: 0;
   left: 0;
@@ -65,7 +65,7 @@
   transform: translateY(-100%);
 }
 
-.offcanvas-bottom {
+.panel-bottom {
   right: 0;
   left: 0;
   height: $offcanvas-vertical-height;
@@ -74,6 +74,6 @@
   transform: translateY(100%);
 }
 
-.offcanvas.show {
+.panel.show {
   transform: none;
 }

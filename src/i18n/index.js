@@ -1,4 +1,4 @@
-class I18n{
+export class I18n{
     constructor(config){
         this.config = {
             "locale": "en",
@@ -49,4 +49,3 @@ class I18n{
     }
 }
 
-module.exports = { I18n }

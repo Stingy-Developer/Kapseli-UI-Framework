@@ -1,6 +1,6 @@
 const { config } = require("./config");
 
-class Storage{
+class StorageManager{
     constructor(conf){
         this.config = conf || {};
         this.storageConfig = this.config.storage ? {...config,...this.config.storage} : {...config};
@@ -58,6 +58,4 @@ class Storage{
     }
 }
 
-module.exports = {
-    Storage
-}
+export { StorageManager }

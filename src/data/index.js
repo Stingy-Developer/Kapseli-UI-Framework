@@ -13,7 +13,7 @@ class Data {
         return false;
     }
     set(key,value = ""){
-        if(key === undefined){
+        if(key !== undefined){
             this.data[key] = value;
         }
     }

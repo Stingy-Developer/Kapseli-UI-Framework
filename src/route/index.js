@@ -41,8 +41,12 @@ class Route{
             }
         });
     }
+
+    open(){
+        // render
+    }
 }
 
-module.exports = {
+export {
     Route
 }

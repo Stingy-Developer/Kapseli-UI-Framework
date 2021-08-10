@@ -1,4 +1,4 @@
-class Event{
+export class Event{
     constructor(config){
         this.event = config || {};
     }
@@ -37,5 +37,3 @@ class Event{
         }
     }
 }
-
-module.exports = { Event }

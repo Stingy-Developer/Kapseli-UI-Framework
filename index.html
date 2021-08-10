@@ -5,60 +5,79 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./scss/dist/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+    rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <div class="container" style="height: 150px;margin-bottom:2rem;" @click="world">
-            <div class="col">
-                <h1><data v-data="hello"></data></h1>
-                <data v-data="hello"></data>
-            </div>
-        </div>
-		<div class="container" style="height: 150px;margin-bottom:2rem;">
-            <div class="col">
-                <h1 @click="p"><data v-data="hello"></data></h1>
-                <data v-data="hello"></data>
-            </div>
-        </div>
-		<div class="container" style="height: 150px;margin-bottom:2rem;">
-            <div class="col">
-                <h1><data v-data="hello"></data></h1>
-                <data v-data="hello"></data>
-            </div>
-        </div>
-		<div class="container" style="height: 150px;margin-bottom:2rem;">
-            <div class="col">
-                <h1><data v-data="hello"></data></h1>
-                <data v-data="hello"></data>
-            </div>
-        </div>
-		<div class="container" style="height: 150px;margin-bottom:2rem;">
-            <div class="col">
-                <h1><data v-data="hello"></data></h1>
-                <data v-data="hello"></data>
-            </div>
-        </div>
-    </div>
-    
+  <btn text="show" icon="alarm"></btn>
+  <btn1 text="show" icon="alarm"></btn1>
+  <btn2 text="show" icon="alarm"></btn2>
+  <btn3 text="show" icon="alarm"></btn3>
+
+    <button @click="world">Good</button>
+
+<div class="panel panel-end" tabindex="-1">
+  <div class="panel-header">
+    <h5 class="panel-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="panel-body small">
+    ...
+  </div>
+</div>
+
+<div class="panel panel-start" tabindex="-1" id="offcanvasBot">
+  <div class="panel-header">
+    <h5 class="panel-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="panel-body small">
+    ...
+  </div>
+</div>
+    </div> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="./dist/bundle.js"></script>
 
     <script>
-        let x = new VDom({
-            el:"#app",
-            data:{
-                hello:"Merhaba"
-            },
-            methods:{
-                world(){
-                    alert("Worlds");
-                },
-                p(){
-                    console.log("waowww")
-                }
-            }
-        })
-        x.addDirective("@click",{render:function(el,cb){el.addEventListener("click",cb)}})
-        x.render();
+     
+let x = new VDom({
+    el:"#app",
+    data:{
+        hello:[["key","v"],["key1","v2"]],
+        show: true
+    },
+    methods:{
+        world(e){
+          console.log(e);
+            x.data.hello.push(["test1","test2"]);
+            x.render();
+        },
+        p(){
+            console.log("waowww")
+        },
+        mymouseover(){
+            console.log("mouseover");
+        }
+    }
+});
+
+let b = new Button("","",function(e){
+    console.log("clicked=>",e);
+});
+
+x.addComponent("BTN",b);
+
+x.render();
+
+
+//         var offcanvasElementList = [].slice.call(document.querySelectorAll('.panel'))
+// var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
+//   return new bootstrap.Offcanvas(offcanvasEl)
+// })
+
 
 
     </script>
