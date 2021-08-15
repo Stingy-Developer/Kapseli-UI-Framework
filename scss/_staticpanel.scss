@@ -1,0 +1,46 @@
+.static-panel{
+
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    flex-shrink: 0;
+    background-color: $secondary;
+    width: 13rem;
+    height: 100vh;
+    color: $light;
+
+    .static-panel-header{
+        width: 100%;
+        display: flex;
+        margin-bottom: 1rem;
+        img{
+            width: 40px;
+        }
+
+        .static-panel-title{
+            margin-left: 1rem;
+            margin-top: auto;
+            margin-bottom: auto;
+            font-size: 1.3rem;
+        }
+    }
+
+
+    .static-panel-footer{
+        margin-top: auto;
+
+        .dropdown-toggle{
+            width: 100%;
+            text-align: left;
+            display: flex;
+
+            &::after{
+                margin-top: auto;
+                margin-bottom: auto;
+                margin-left: auto;
+            }
+        }
+    }
+
+
+}

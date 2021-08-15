@@ -11,30 +11,31 @@
 </head>
 <body>
     <div id="app">
-  <btn text="show" icon="alarm"></btn>
-  <btn1 v-if="show" text="show" icon="alarm"></btn1>
 
-    <button @click="world">Good</button>
+      <div class="container">
 
-<div class="panel panel-end" tabindex="-1">
-  <div class="panel-header">
-    <h5 class="panel-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="panel-body small">
-    ...
-  </div>
-</div>
+        <btn text="show" icon="alarm"></btn>
+        <btn1 v-if="show" text="show" icon="alarm"></btn1>
+        <div v-for="h in hello">
+              <button @click="world">
+                <data v-data="h"></data>
+              </button>
+        </div>
+      
+      
+      <div class="panel panel-end" tabindex="-1">
+        <div class="panel-header">
+          <h5 class="panel-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="panel-body small">
+          ...
+        </div>
+      </div>
+      
+      <fp content="My Title"></fp>
+      </div>
 
-<div class="panel panel-start" tabindex="-1" id="offcanvasBot">
-  <div class="panel-header">
-    <h5 class="panel-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="panel-body small">
-    ...
-  </div>
-</div>
     </div> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="./dist/bundle.js"></script>
@@ -44,14 +45,12 @@
 let x = new VDom({
     el:"#app",
     data:{
-        hello:[["key","v"],["key1","v2"]],
+        hello:["key","v"],
         show: true
     },
     methods:{
         world(e){
-          console.log(e);
-            x.data.hello.push(["test1","test2"]);
-            x.render();
+            x.data.hello.push(Math.random().toString(36).substr(2,7));
         },
         p(){
             console.log("waowww")
@@ -62,22 +61,29 @@ let x = new VDom({
     }
 });
 
-let b = new Button("","",function(e){
-    console.log("clicked=>",e);
+
+let b = new Button("","",(e) => {
+ offcanvasList[1].toggle();
 });
+
+let fp = new Alert("danger","");
 
 x.addComponent("BTN",b);
 x.addComponent("BTN1",b);
+x.addComponent("FP",fp);
+
+
 
 
 x.render();
 
 
-        var offcanvasElementList = [].slice.call(document.querySelectorAll('.panel'))
- var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
+/*
+var offcanvasElementList = [].slice.call(document.querySelectorAll('.panel'))
+let offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
   return new bootstrap.Offcanvas(offcanvasEl)
 })
-
+*/
 
 
     </script>

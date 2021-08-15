@@ -5069,6 +5069,44 @@ textarea.form-control-lg {
   transform: none;
 }
 
+.static-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  flex-shrink: 0;
+  background-color: #36393f;
+  width: 13rem;
+  height: 100vh;
+  color: #f8f9fa;
+}
+.static-panel .static-panel-header {
+  width: 100%;
+  display: flex;
+  margin-bottom: 1rem;
+}
+.static-panel .static-panel-header img {
+  width: 40px;
+}
+.static-panel .static-panel-header .static-panel-title {
+  margin-left: 1rem;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 1.3rem;
+}
+.static-panel .static-panel-footer {
+  margin-top: auto;
+}
+.static-panel .static-panel-footer .dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  display: flex;
+}
+.static-panel .static-panel-footer .dropdown-toggle::after {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+}
+
 .list-group-item {
   background-color: transparent;
   color: #8e9297;

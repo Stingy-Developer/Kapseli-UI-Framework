@@ -1,7 +1,8 @@
 import { VDom } from "./vdom/index";
 // import { Component } from "./components/Component";
 import { Button } from "./components/Button";
-
+import { FloatPanel,StaticPanel } from "./components/Panel";
+import { Alert } from "./components/Alert";
 // window.s = StorageManager;
 
 // import {Kapseli} from "./app/app";
@@ -9,6 +10,9 @@ import { Button } from "./components/Button";
 // window.Kapseli = Kapseli;
 window.VDom = VDom;
 window.Button = Button;
+window.FloatPanel = FloatPanel;
+window.FP = FloatPanel;
+window.Alert = Alert;
 
 
 // let x = new VDom({

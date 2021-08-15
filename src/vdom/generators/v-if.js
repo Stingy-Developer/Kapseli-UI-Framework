@@ -8,7 +8,7 @@ export function setVIf(obj){
         } catch (error) {
             value = expression;
         }
-        console.log(value)
+
         if(!value){
             vdom.prevTag = vdom.tag;
             vdom.tag = "COMMENT";
