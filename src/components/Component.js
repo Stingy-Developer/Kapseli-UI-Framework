@@ -1,6 +1,7 @@
 import { VDom } from "../vdom/index";
 import { setVFor } from "../vdom/generators/v-for";
 import { setVIf } from "../vdom/generators/v-if";
+import onChange from "on-change";
 
 export class Component extends VDom{
     constructor(conf){
@@ -10,8 +11,19 @@ export class Component extends VDom{
             methods: {},
             data: {},
             template: "",
+            fetchMethod: false,
+            mounted: () => {},
             ...conf
         };
+
+        this.fetchMethod = config.fetchMethod ? {
+            "data-kapseli-fetch-mode": config.fetchMethod.fetch_mode ? "on" : "off",
+            "data-kapseli-fetch-method": config.fetchMethod.fetch.method,
+            "data-kapseli-fetch-url": config.fetchMethod.fetch.url,
+            "data-kapseli-fetch-opts": JSON.stringify( config.fetchMethod.fetch.opts )
+        } : false;
+
+        this.mounted = config.mounted;
         this.props = config.props ? config.props : [];
         this.$props = {};
         this.$directives = {};
@@ -96,22 +108,27 @@ export class Component extends VDom{
         this.self = self;
         this.renderVDom();
         if( this._data && !this.data ){
-            this.data = new Proxy(
+            this.data = onChange(
                 {
                     ...this._data,
                     ...this.$props
-                },{
-                set: (target, key, value)=>{
-                target[key] = value;
+                },() => {
                 this.render(this.self);
                 this.self.render()
-                return true;
-                }
             });
         }
+
+        if(this.fetchMethod){
+            this.$current_vdom.props = {
+                ...this.$current_vdom.props,
+                ...this.fetchMethod
+            };
+        }
+
         return {
             vdom:this.$current_vdom,
-            methods:this.methods
+            methods:this.methods,
+            mounted: this.mounted
         };
 
     }
