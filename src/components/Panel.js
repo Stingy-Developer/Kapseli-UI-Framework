@@ -1,51 +1,81 @@
 import { Component } from "./Component";
+import "bootstrap/js/dist/offcanvas"
+import Offcanvas from "bootstrap/js/dist/offcanvas";
 
-export class Button extends Component{
-    constructor(icon = null, text = null, command_or_cb = null) {
+
+class FloatPanel extends Component{
+    constructor(location = "start",cb) {
+        let id = Math.random().toString(36).substring(2,7);        
         super({
             data:{
-                icon: icon != "" ? icon : false,
-                text: text != "" ? text : "Default Button",
-                command_or_cb: command_or_cb
+                location: location,
+                title: "Panel Title"
             },
             template:`
-            <button class="btn btn-primary">
-                <i class="material-icons" v-if="icon">
-                    <data v-data="icon"></data>
-                </i> 
-                <span>
-                    <data v-data="text"></data>
-                </span>
-            </button>
+            <div class="panel panel-${location}" tabindex="-1" id="${id}">
+                <div class="panel-header">
+                    <h5 class="panel-title">
+                        <data v-data="title"></data>
+                    </h5>
+                    <button type="button" class="btn-close text-reset" aria-label="Close" @click="panel_hide"></button>
+                </div>
+                <div class="panel-body small">
+                    ${cb()}
+                </div>
+            </div>
             `,
             methods:{
-                // go(){
-                //     // go to command_or_cb
-                //     console.log("clicked")
-                // }
+                panel_hide:() => {
+                    this.$options.hide();
+                }
             },
-            props:["text","icon"]
-        });
-        
-    }
-
-    css(stylesheet){
-        this.props = this._beautyAttr({
-            ...this.props,
-            style:stylesheet
+            props:["title"],
+            mounted: () => {
+                this.$options = new Offcanvas(
+                    document.getElementById(id)
+                );
+            }
         });
     }
+}
 
-    disable(bool){
-        if(bool){
-            this.vdom.props.className =+ " disabled";
-        }else{
-            this.vdom.props.className.replace("disabled","")
-        }
+
+class StaticPanel extends Component{
+    constructor(location = "start",uri,body_cb,footer_cb) {
+        super({
+            data:{
+                location: location,
+                title: "Panel Title",
+                is_footer: typeof footer_cb === "function",
+                is_body: typeof body_cb === "function",
+            },
+            template:`
+            <div class="static-panel static-panel-${location}">
+                <a class="static-panel-header" href="${uri}">
+                    <img src="https://avatars.githubusercontent.com/u/59289764?s=60&v=4" alt="">
+                    <span class="static-panel-title">
+                        <data v-data="title"></data>
+                    </span>
+                </a>
+                <hr>
+                <div v-if="is_body">
+                ${typeof body_cb === "function" ? body_cb() : ""}
+                </div>
+                <div class="static-panel-footer" v-if="is_footer">
+                    <hr>
+                    ${typeof footer_cb === "function" ? footer_cb() : ""}
+                </div>
+            </div>
+            `,
+            methods:{
+            },
+            props:["title"]
+        });
     }
+}
 
-    type(btnType){
-        this.vdom.props.type = btnType;
-    }
 
+
+export {
+    FloatPanel,StaticPanel
 }
