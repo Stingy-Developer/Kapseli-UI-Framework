@@ -1,6 +1,7 @@
 import { m,createElement,patch,className,style } from "../compiler/index";
 import { setVFor } from "../vdom/generators/v-for";
 import { setVIf } from "../vdom/generators/v-if";
+import onChange from "on-change";
 
 /**
  * TODO:         attrs["data-object-id"] = attrs["data-object-id"] ? attrs["data-object-id"] : Math.random().toString(36).substr(2,7);
@@ -17,15 +18,12 @@ class VDom{
         this.methods = config.methods ? config.methods : {};
         this.notListenedData = {};
         this.$components = {};
+        this.mounted = [];
         
         if(config.data){
           
-            this.data = new Proxy(config.data,{
-                set: (target, key, value)=>{
-                target[key] = value;
+            this.data = onChange(config.data,()=>{
                 this.render();
-                return true;
-                }
             });
         }
 
@@ -85,10 +83,8 @@ class VDom{
     h (tag, props, children) {
         return { tag, props, children }
     }
-
     _getVdom(el){
         let childs = []; 
-        
         if(el && el.nodeName != "#text"){
             for (let i = 0; i < el.childNodes.length; i++) {
     
@@ -205,6 +201,11 @@ class VDom{
                this.$current_vdom,this 
                 );
             this.el.parentElement.replaceChild(this.app,this.el);
+
+            for (let i = 0; i < this.mounted.length; i++) {
+                this.mounted[i]();
+            }
+            
         }else{
             renderedvdom = this.renderGenerators(this.$vdom);
             let vdom = this.renderObject(renderedvdom);
@@ -223,6 +224,7 @@ class VDom{
                 ...this.methods,
                 ...comp.methods
             };
+            this.mounted.push(comp.mounted);
         }
         
         if(obj.props){
@@ -255,7 +257,7 @@ class VDom{
 
     render(){
         this.renderVDom();
-        console.log(this.$vdom.props["data-object-id"])
+        this.notListenedData = {};
     }
 }
 
