@@ -1,4 +1,5 @@
 {
+    
     "presets": [
         ["@babel/preset-env", {
             "useBuiltIns": "usage",
@@ -6,10 +7,13 @@
             "targets": {
                 "browsers": [
                     "last 5 versions",
-                    "ie >= 8"
                 ]
             }
         }]
-    ]
+    ],
     
+    "plugins": [
+        ["@babel/plugin-transform-react-jsx", { "pragma": "m", "pragmaFrag": "'fragment'" }]
+    ],
+    "comments": false   
 }
