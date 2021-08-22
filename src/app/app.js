@@ -6,6 +6,7 @@ import { Event } from "../event/index";
 import { Panel } from "../panel/index";
 import { Plugin } from "../plugin/index";
 import { Route } from "../route/index";
+import { VDom } from "../vdom";
 
 // configs
 import { setCommands } from "./configs/command";
@@ -20,25 +21,38 @@ const Kapseli = {
         this.I18n = new I18n( config.i18n ? config.i18n : {} );
         this.Event = new Event( config.event ? config.event : {} );
         this.Route = new Route( config.route ? config.route : {} );
-        // router init
-        // var routers = [].slice.call(document.querySelectorAll('[data-route]'))
-        // var offcanvasList = offcanvasElementList.map(function (offcanvasEl) {
-        //   return new bootstrap.Offcanvas(offcanvasEl)
-        // })
+        this.View = new VDom( config.view ? config.view : {} );
+   
 
+        
         setCommands(this);
         setEvents(this);
 
         return this;
     },
 
-    store(){
-
+    store(data){
+        this.Storage.store(data);
     },
 
-    load(){},
+    load(data){
+        this.Storage.load(data);
+    },
 
-    render(){},
+    render(){
+        this.View.render();
+
+        // router init
+        var routers = [].slice.call(document.querySelectorAll('[data-route]'))
+        routers.map(function (router) {
+            if(router && router.attributes){
+                if(!this.Route.hasRoute(router.attributes["data-route"])){
+                    console.error(`RouterError: '${router.attributes["data-route"]}' route is not registered!`)
+                }
+            }
+          
+        })
+    },
 
     refresh(configs){
         this.init(configs);
