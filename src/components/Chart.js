@@ -1,44 +1,48 @@
-import { Chart } from "chart.js";
 import { Component } from "./Component";
 
 export class ChartComponent extends Component{
-    constructor(type,data,options){
-        this.el = Math.random().toString(16).substr(2, 8);
-        this.type = type || "line";
-        this.data = data;
-        this.config = {
-            type: this.type,
-            data: this.data,
-            options: options || {}
-        };
-        this.vdom = {
-            tag: 'canvas',
-            props: {
-                id: this.el
+    constructor(config) {
+        let chart_id = Math.random().toString(36).substring(2,7);
+        super({
+            data:{
+                chart_id: chart_id,
+                config: config
             },
-            children: []
-        }
-    }
-
-    css(stylesheet){
-        this.vdom.props.style = stylesheet || '';
-    }
-
-    setType(type){
-        this.config.type = type || 'line';
-    }
-
-    setData(config){
-        this.config.data = config.data || {};
-        this.config.options = config.options || {};
-    }
-
-    chartRender(){
-        let ctx = document.getElementById(this.el);
-        this.chart = new Chart(
-            ctx,
-            this.config
-        );
+            template:`
+            <canvas :id="chart_id"></canvas>
+            `,
+            methods:{
+            },
+            props:{
+                content: {}
+            },
+            mounted:() => {
+                this.chartRender( this.data.chart_id,config );
+            }
+        });
         
     }
+
+    chartRender(el,config){
+        if(window.Chart !== undefined){
+            this.data.chart = new Chart(
+                document.getElementById(el),
+                config
+            );
+        }else{
+            console.error("THis component needs Chart.js to work!");
+        }
+        
+        
+    }
+
 }
+
+
+
+
+
+
+
+
+
