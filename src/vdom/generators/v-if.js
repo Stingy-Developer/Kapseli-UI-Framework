@@ -1,12 +1,19 @@
 export function setVIf(obj){
     obj.addGenerator("v-if",function(expression,vdom,self){
-        let d = self.getData(expression);
-        if(d !== "") expression = d;
         let value = false;
-        try {
-            value = eval(expression);
-        } catch (error) {
-            value = expression;
+        let l = expression.split(" ");
+        for (let i = 0; i < l.length; i++) {
+            let data = self.getData(l[i])
+            l[i] = data !== undefined ? data : l[i];    
+        }
+
+        let d = l.join(" ");
+        if(d !== ""){
+            try {
+                value = value || eval(d);
+            } catch (error) {
+                value = value || false;
+            }
         }
 
         if(!value){
