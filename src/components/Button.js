@@ -29,7 +29,10 @@ export class Button extends Component{
                     }
                 }
             },
-            props:["text","icon"],
+            props:{
+                text: {},
+                icon:{}
+            },
             fetchMethod: {
                 fetch_mode: "on",
                 fetch:{

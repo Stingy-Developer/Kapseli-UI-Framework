@@ -29,7 +29,9 @@ class FloatPanel extends Component{
                     this.$options.hide();
                 }
             },
-            props:["title"],
+            props:{
+                title:{}
+            },
             mounted: () => {
                 this.$options = new Offcanvas(
                     document.getElementById(id)
@@ -69,7 +71,9 @@ class StaticPanel extends Component{
             `,
             methods:{
             },
-            props:["title"]
+            props:{
+                title:{}
+            },
         });
     }
 }

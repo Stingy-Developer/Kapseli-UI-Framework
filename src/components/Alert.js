@@ -13,7 +13,9 @@ export class Alert extends Component{
             `,
             methods:{
             },
-            props:["content"]
+            props:{
+                content: {}
+            }
         });
         
     }
