@@ -116,8 +116,8 @@ class VDom{
 
     renderComponent(tag,props){
         let component = this.getComponent(tag);
-        component.init(props);
-        return component.render(this);
+        component.init(this,props);
+        return component.render();
     }
 
     getData(key_str){
@@ -190,11 +190,40 @@ class VDom{
         return vdom;    
     }
 
+    renderBindings(_vdom){
+        let vdom = JSON.parse(JSON.stringify(_vdom));
+        if(vdom && typeof vdom !== "string"){
+            let props = Object.keys(vdom.props);
+
+            for (let i = 0; i < props.length; i++) {
+                const prop = props[i];
+                if( prop.startsWith(":") ){
+                    let bind_value = vdom.props[prop];
+                    let d_val = this.getData(bind_value);
+                    
+                    if(d_val !== undefined){
+                        bind_value = d_val;
+                    }
+                    
+                    vdom.props[prop.substring(1)] = bind_value;
+                }
+            }
+
+        
+            for (let i = 0; i < vdom.children.length; i++) {
+                vdom.children[i] = this.renderBindings(vdom.children[i])    
+            }   
+        }
+
+        return vdom;    
+    }
+
     renderVDom(){
         let renderedvdom = false;
         if(!this.app){
             this.$vdom = this._getVdom(this.el);
             renderedvdom = this.renderGenerators(this.$vdom);
+            renderedvdom = this.renderBindings(renderedvdom);
 
             this.$current_vdom = this.renderObject(renderedvdom);
             this.app = createElement( 
@@ -217,7 +246,7 @@ class VDom{
 
     renderObject(_object){
         let obj = JSON.parse(JSON.stringify(_object));
-        if(obj.tag in this.$components){
+        if(this.$components !== undefined && obj.tag in this.$components){
             let comp = this.renderComponent(obj.tag,obj.props);
             obj = comp.vdom;
             this.methods = {
@@ -234,6 +263,14 @@ class VDom{
                 const prop = arr[i];
                 if(prop.startsWith("@")){
                     obj["$directives"][prop] = obj.props[prop];
+                }
+            }
+
+            obj["$bindings"] = {};
+            for (let i = 0; i < arr.length; i++) {
+                const prop = arr[i];
+                if(prop.startsWith(":")){
+                    obj["$bindings"][prop] = obj.props[prop];
                 }
             }
         

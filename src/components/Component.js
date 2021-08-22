@@ -40,7 +40,8 @@ export class Component extends VDom{
         setVIf(this);
     }
 
-    init(props){
+    init(self,props){
+        this.self = self;
         this.renderProps(props);
     }
 
@@ -75,12 +76,22 @@ export class Component extends VDom{
         return data;
     }
 
+
     renderProps(props){
         for (const key in props) {
             if (Object.hasOwnProperty.call(props, key)) {
-                const prop_val = props[key];
-                
-                if(this.props.includes(key)){
+                let prop_val = props[key];
+               
+                if(key in this.props){
+                    var temp_val = this.self.getData(prop_val); 
+                    if( temp_val !== undefined ){
+                        prop_val = temp_val;
+
+                    }else if("edit" in this.props[key]){
+                        prop_val = this.props[key].edit(prop_val);
+                    }
+                    
+                    
                     this.$props[key] = prop_val;
                     this._data[key] = prop_val;
                 }
@@ -93,6 +104,7 @@ export class Component extends VDom{
         if(!this.app){
             this.$vdom = this._getVdom(this.el);
             renderedvdom = this.renderGenerators(this.$vdom);
+            renderedvdom = this.renderBindings(renderedvdom);
 
             this.$current_vdom = this.renderObject(renderedvdom);
         }else{
@@ -102,10 +114,9 @@ export class Component extends VDom{
 
     }
 
-    render(self){
+    render(){
         
         this.$components = self.$components;
-        this.self = self;
         this.renderVDom();
         if( this._data && !this.data ){
             this.data = onChange(
