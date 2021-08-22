@@ -6,10 +6,10 @@ let config = {
             async store(data){
                 let d = new Data(data || {});
 
-                let d_db = localStorage.getItem(this.options.storageKey);
+                let d_db = sessionStorage.getItem(this.options.storageKey);
                 if(d_db) d.load(d_db);
 
-                localStorage.setItem(
+                sessionStorage.setItem(
                     this.options.storageKey,
                     d.dump()
                 );
@@ -20,7 +20,7 @@ let config = {
             async load(data){
                 let d = new Data({});
 
-                let d_db = localStorage.getItem(this.options.storageKey);
+                let d_db = sessionStorage.getItem(this.options.storageKey);
                 if(d_db) d.load(d_db);
                 
                 let data_arr = Array.from(data);
