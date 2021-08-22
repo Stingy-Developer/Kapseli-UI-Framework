@@ -14,11 +14,11 @@
 
       <div class="container">
 
-        <btn text="show" icon="alarm"></btn>
-        <btn1 v-if="show" text="show" icon="alarm"></btn1>
+        <btn text="Show" icon="alarm"></btn>
+        <btn1 v-if="show" text="Show" icon="alarm"></btn1>
         <div v-for="h in hello">
               <button @click="world">
-                <data v-data="h"></data>
+                <data v-data="h.value.length"></data>
               </button>
         </div>
       
@@ -33,24 +33,57 @@
         </div>
       </div>
       
-      <fp content="My Title"></fp>
+      <fp list="l"></fp>
+      <chart/>
       </div>
 
+      <form name="formA" action="/cgi-bin/test" method="post">
+        <p>Press "Info" for form details, or "Set" to change those details.</p>
+        <p>
+         <button type="button" onclick="getFormInfo();">Info</button>
+         <button type="button" onclick="setFormInfo(this.form);">Set</button>
+         <button type="reset">Reset</button>
+        </p>
+       
+        <textarea id="form-info" rows="15" cols="20"></textarea>
+       </form>
+
+
     </div> 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="./dist/bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <script src="./dist/bundle.js"></script>
 
     <script>
      
-let x = new VDom({
+let x = Kapseli.init({
+  view:{
     el:"#app",
     data:{
         hello:["key","v"],
-        show: true
+        show: true,
+        l: [
+          {
+            label:'Home',
+            href: "/"
+          },
+          {
+            label:'Home1',
+            href: "/1"
+          },
+          {
+            label:'Home2',
+            href: "/2"
+          },
+          {
+            label:'Home3',
+            href: "/3"
+          }
+        ]
     },
     methods:{
         world(e){
-            x.data.hello.push(Math.random().toString(36).substr(2,7));
+            x.View.data.hello.push(Math.random().toString(36).substr(2,7));
         },
         p(){
             console.log("waowww")
@@ -59,20 +92,7 @@ let x = new VDom({
             console.log("mouseover");
         }
     }
-});
-
-
-let b = new Button("","",(e) => {
- offcanvasList[1].toggle();
-});
-
-let fp = new Alert("danger","");
-
-x.addComponent("BTN",b);
-x.addComponent("BTN1",b);
-x.addComponent("FP",fp);
-
-
+}});
 
 
 x.render();
