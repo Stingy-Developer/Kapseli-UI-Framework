@@ -1,5 +1,5 @@
 class Command{
-    constructor(config,self){
+    constructor(self){
         this.commands = {};
         this.states = {};
         this.event = self.Event;
