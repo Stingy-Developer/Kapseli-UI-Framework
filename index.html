@@ -14,11 +14,9 @@
 
       <div class="container">
 
-        <btn text="Show" icon="alarm"></btn>
-        <btn1 v-if="show" text="Show" icon="alarm"></btn1>
         <div v-for="h in hello">
-              <button @click="world">
-                <data v-data="h.value.length"></data>
+              <button class="btn btn-success" @click="world">
+                <data v-data="h.value"></data>
               </button>
         </div>
       
@@ -56,7 +54,12 @@
 
     <script>
      
+     Kapseli.plugins.add("a",(self,opts)=>{
+       console.log(self,opts);
+     })
+
 let x = Kapseli.init({
+  plugins: ["a"],
   view:{
     el:"#app",
     data:{
