@@ -35,12 +35,10 @@
       <chart/>
       </div>
 
-      <form name="formA" action="/cgi-bin/test" method="post">
+      <form id="form1" action="" method="post">
         <p>Press "Info" for form details, or "Set" to change those details.</p>
         <p>
-         <button type="button" onclick="getFormInfo();">Info</button>
-         <button type="button" onclick="setFormInfo(this.form);">Set</button>
-         <button type="reset">Reset</button>
+         <input type="submit" value="submit">
         </p>
        
         <textarea id="form-info" rows="15" cols="20"></textarea>
