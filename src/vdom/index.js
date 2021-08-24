@@ -9,8 +9,8 @@ import onChange from "on-change";
  */
 
 class VDom{
-    constructor(conf){
-
+    constructor(conf,self){
+        this.event = self.Event;
         let config = conf ? conf : false;
         this.$directives = {};
         this.$generators = {};

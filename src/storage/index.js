@@ -1,10 +1,10 @@
 const { config } = require("./config");
 
 class StorageManager{
-    constructor(conf){
+    constructor(conf,self){
         this.config = conf || {};
         this.storageConfig = this.config.storage ? {...config,...this.config.storage} : {...config};
-        
+        this.event = self.Event;
     }
     getConfig(){
         return this.storageConfig;
@@ -29,32 +29,32 @@ class StorageManager{
         }
     }
     async store(data){
-        this.config.event.run("storage:start");
-        this.config.event.run("storage:start:store");
+        this.event.run("storage:start");
+        this.event.run("storage:start:store");
         try {
             let d = await this.storageConfig["storages"][ this.storageConfig["currentStorage"] ].store(data);
-            this.config.event.run("storage:store",d);
+            this.event.run("storage:store",d);
         } catch (error) {
-            this.config.event.run("storage:error:store",error);
-            this.config.event.run("storage:error",error);
+            this.event.run("storage:error:store",error);
+            this.event.run("storage:error",error);
         }
-        this.config.event.run("storage:end:store");
-        this.config.event.run("storage:end");
+        this.event.run("storage:end:store");
+        this.event.run("storage:end");
         
     }
     async load(data){
-        this.config.event.run("storage:start");
-        this.config.event.run("storage:start:load");
+        this.event.run("storage:start");
+        this.event.run("storage:start:load");
         try {
             let d = await this.storageConfig["storages"][ this.storageConfig["currentStorage"] ].load(data);
-            this.config.event.run("storage:load",d);
+            this.event.run("storage:load",d);
             
         } catch (error) {
-            this.config.event.run("storage:error:load",error);
-            this.config.event.run("storage:error",error);
+            this.event.run("storage:error:load",error);
+            this.event.run("storage:error",error);
         }
-        this.config.event.run("storage:end:load");
-        this.config.event.run("storage:end");
+        this.event.run("storage:end:load");
+        this.event.run("storage:end");
     }
 }
 

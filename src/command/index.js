@@ -1,8 +1,8 @@
 class Command{
-    constructor(config){
+    constructor(config,self){
         this.commands = {};
         this.states = {};
-        this.event = config.event;
+        this.event = self.Event;
 
     }
     add(command,cb){

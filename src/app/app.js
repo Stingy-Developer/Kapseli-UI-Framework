@@ -11,23 +11,49 @@ import { VDom } from "../vdom";
 // configs
 import { setCommands } from "./configs/command";
 import { setEvents } from "./configs/event";
+import { defaultConfig } from "./configs/default";
 
 const Kapseli = {
     plugins: new Plugin(),
     init(configs){
-        let config = configs ? configs : {};
-        this.Storage = new StorageManager( config.storage ?  config.storage :  {} );
-        this.Command = new Command( config.command ? config.command : {} );
-        this.I18n = new I18n( config.i18n ? config.i18n : {} );
+        let config = configs ? {
+            ...defaultConfig,
+            ...configs
+        } : defaultConfig;
         this.Event = new Event( config.event ? config.event : {} );
-        this.Route = new Route( config.route ? config.route : {} );
-        this.View = new VDom( config.view ? config.view : {} );
-   
-
+        this.I18n = new I18n( config.i18n ? config.i18n : {},this );
+        this.Storage = new StorageManager( config.storage ?  config.storage :  {}, this );
+        this.Command = new Command( config.command ? config.command : {},this );
+        this.Route = new Route( config.route ? config.route : {},this );
+        this.View = new VDom( config.view ? config.view : {},this );
         
-        setCommands(this);
+
         setEvents(this);
 
+        setCommands(this);
+        
+        if(config.plugins){
+            let plgs = config.plugins;
+            for (let i = 0; i < plgs.length; i++) {
+                if( plgs[i] in this.plugins.plugins){
+                    try {
+
+                        this.plugins.plugins[ plgs[i] ](
+                            this, 
+                            plgs[i] in config.pluginOpts ? config.pluginOpts[plgs[i]] : {}
+                        );
+
+                    } catch (error) {
+                        console.error(`PluginError: '${plgs[i]}' Plugin => ${error}`)
+                    }
+                    
+                }else{
+                    console.error(`PluginError: '${plgs[i]}' Plugin => This plugin is not registered!`)
+                }
+                
+            }
+        }
+        this.Event.run("app:init");
         return this;
     },
 

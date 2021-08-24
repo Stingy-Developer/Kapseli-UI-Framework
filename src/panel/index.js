@@ -1,3 +1,4 @@
+import {  } from "../components/";
 class Panel{
     constructor(config){
         this.config = config;
@@ -63,7 +64,7 @@ class Panel{
     }
 
     show(panel_id){
-        let panel = panel_id in this.panelConfig ? this.panelConfig[panel_id] : false;
+        let panel = this.get(panel_id);
         if(panel){
             panel.config.show = true;
             this.config.event.run(`panel:${panel_id}:show:before`,panel);
@@ -73,7 +74,7 @@ class Panel{
     }
 
     hide(panel_id){
-        let panel = panel_id in this.panelConfig ? this.panelConfig[panel_id] : false;
+        let panel = this.get(panel_id);
         if(panel){
             panel.config.show = false;
             this.config.event.run(`panel:${panel_id}:hide:before`,panel);

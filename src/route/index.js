@@ -1,7 +1,7 @@
 const { routeConfig } = require("./config");
 
 class Route{
-    constructor(config){
+    constructor(config,self){
         this.config = config || {};
         this.routeConfig = config.route ? {...routeConfig,...config.route} : routeConfig;
     }
