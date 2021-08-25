@@ -21,3 +21,13 @@ Kapseli has built-in auto init router. Only register your pages. Routing is the 
 
 ### Customizable HTML Render Engine
 Kapseli has its own HTML Render Engine. No dependency! This engine is powered by Event-Listen-Network of Kapseli. You can customize it by using this network and the loew level API.
+
+
+## To install
+```bash
+npm i @stingydev/kapseli
+```
+
+## Sponsors 
+
+![browserstack](./sposors/browserstack.svg)
