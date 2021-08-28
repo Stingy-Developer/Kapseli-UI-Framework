@@ -13,7 +13,14 @@
     <div id="app">
 
       <div class="container">
-
+        <btn text="Button">
+          <span>
+            good
+          </span>
+          <span>
+            bad
+          </span>
+        </btn>
         <div v-for="h in hello">
               <button class="btn btn-success" @click="world">
                 <data v-data="h.value"></data>
@@ -95,6 +102,10 @@ let x = Kapseli.init({
     }
 }});
 
+
+let b = new KP_Button()
+
+x.View.addComponent("BTN",b)
 
 x.render();
 

@@ -6,7 +6,7 @@
             "corejs": "3",
             "targets": {
                 "browsers": [
-                    "last 5 versions",
+                    "last 3 versions"
                 ]
             }
         }]
