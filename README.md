@@ -1,7 +1,7 @@
 # Kapseli-UI-Framework
 
 <p align="center">
-    ![kapseli logo](./kapseli-logo.png)
+    <img src="./kapseli-logo.png" alt="kapseli-logo">
 </p>
 
 
