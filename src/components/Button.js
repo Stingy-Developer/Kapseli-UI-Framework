@@ -4,8 +4,8 @@ export class Button extends Component{
     constructor(icon = null, text = null, command_or_cb = null) {
         super({
             data:{
-                icon: icon != "" ? icon : false,
-                text: text != "" ? text : "Default Button",
+                icon: icon ? icon : false,
+                text: text ? text : "Default Button",
                 command_or_cb: command_or_cb
             },
             template:`
@@ -16,6 +16,7 @@ export class Button extends Component{
                 <span>
                     <data v-data="text"></data>
                 </span>
+                <slot></slot>
             </button>
             `,
             methods:{

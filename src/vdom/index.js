@@ -10,7 +10,7 @@ import onChange from "on-change";
 
 class VDom{
     constructor(conf,self){
-        this.event = self.Event;
+        this.event = self !== undefined ? self.Event : {};
         let config = conf ? conf : false;
         this.$directives = {};
         this.$generators = {};
@@ -114,9 +114,9 @@ class VDom{
         return this.$components[tag];
     }
 
-    renderComponent(tag,props){
+    renderComponent(tag,props,children){
         let component = this.getComponent(tag);
-        component.init(this,props);
+        component.init(this,props,children);
         return component.render();
     }
 
@@ -247,7 +247,7 @@ class VDom{
     renderObject(_object){
         let obj = JSON.parse(JSON.stringify(_object));
         if(this.$components !== undefined && obj.tag in this.$components){
-            let comp = this.renderComponent(obj.tag,obj.props);
+            let comp = this.renderComponent(obj.tag,obj.props,obj.children);
             obj = comp.vdom;
             this.methods = {
                 ...this.methods,

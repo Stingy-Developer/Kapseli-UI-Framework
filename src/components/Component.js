@@ -40,9 +40,10 @@ export class Component extends VDom{
         setVIf(this);
     }
 
-    init(self,props){
+    init(self,props,children){
         this.self = self;
         this.renderProps(props);
+        this.slots = children;
     }
 
     getData(key_str){
@@ -112,6 +113,67 @@ export class Component extends VDom{
             this.$current_vdom = this.renderObject(renderedvdom);
         }
 
+    }
+
+    
+    renderObject(_object){
+        let obj = JSON.parse(JSON.stringify(_object));
+        if(this.$components !== undefined && obj.tag in this.$components){
+            let comp = this.renderComponent(obj.tag,obj.props,obj.children);
+            obj = comp.vdom;
+            this.methods = {
+                ...this.methods,
+                ...comp.methods
+            };
+            this.mounted.push(comp.mounted);
+        }
+        
+        if(obj.props){
+            var arr = Object.keys( obj.props );
+            obj["$directives"] = {};
+            for (let i = 0; i < arr.length; i++) {
+                const prop = arr[i];
+                if(prop.startsWith("@")){
+                    obj["$directives"][prop] = obj.props[prop];
+                }
+            }
+
+            obj["$bindings"] = {};
+            for (let i = 0; i < arr.length; i++) {
+                const prop = arr[i];
+                if(prop.startsWith(":")){
+                    obj["$bindings"][prop] = obj.props[prop];
+                }
+            }
+        
+        }
+        
+        if(obj.tag == "DATA"){
+            let value = this.getData( obj.props["v-data"] );
+            if(value !== ""){
+                obj = String(value);
+            }
+        }else if( obj.tag == "SLOT" ){
+            
+            return this.slots;
+        }else if( typeof obj === "string" ){
+            obj = obj;
+        }else{
+            let childs = [];
+            for (let i = 0; i < obj.children.length; i++) {
+                let output = this.renderObject( obj.children[i] );
+
+                if( Array.isArray(output) ){
+                    childs.push( ...output );
+                }else{
+                    childs.push(output);
+                }
+                
+            }
+            obj.children = JSON.parse(JSON.stringify(childs));
+        }
+        
+        return obj;
     }
 
     render(){
