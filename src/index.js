@@ -1,6 +1,5 @@
 import { Kapseli } from "./app/app";
-import { Button } from "./components/Button";
+import { Component } from "./components/Component";
 
 window.Kapseli = Kapseli;
-
-window.KP_Button = Button
+Kapseli.Component = Component;

@@ -1,5 +1,10 @@
 # Kapseli-UI-Framework
 
+<p align="center">
+    ![kapseli logo](./kapseli-logo.png)
+</p>
+
+
 A UI Framework for creating a SPA dashboard application.
 
 ## Features

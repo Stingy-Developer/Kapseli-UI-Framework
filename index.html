@@ -42,7 +42,7 @@
       <chart/>
       </div>
 
-      <form id="form1" action="" method="post">
+      <form id="form1" method="post">
         <p>Press "Info" for form details, or "Set" to change those details.</p>
         <p>
          <input type="submit" value="submit">
@@ -58,13 +58,9 @@
       <script src="./dist/bundle.js"></script>
 
     <script>
-     
-     Kapseli.plugins.add("a",(self,opts)=>{
-       console.log(self,opts);
-     })
+
 
 let x = Kapseli.init({
-  plugins: ["a"],
   view:{
     el:"#app",
     data:{
@@ -102,10 +98,6 @@ let x = Kapseli.init({
     }
 }});
 
-
-let b = new KP_Button()
-
-x.View.addComponent("BTN",b)
 
 x.render();
 
