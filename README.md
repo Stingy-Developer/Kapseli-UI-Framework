@@ -36,7 +36,7 @@ npm i @stingydev/kapseli
 
 ## Sponsors 
 
-![browserstack](./sponsors/browserstack.svg)
+![browserstack](./sponsors/browserstack.jpeg)
 
 ## Support
 
