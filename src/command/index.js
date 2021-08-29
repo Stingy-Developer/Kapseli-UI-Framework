@@ -1,8 +1,15 @@
 class Command{
-    constructor(self){
+    constructor(config,self){
+        this.config = config;
         this.commands = {};
         this.states = {};
         this.event = self.Event;
+
+        for (const key in this.config) {
+            if (Object.hasOwnProperty.call(this.config, key)) {
+                this.add( key, this.config[key] );
+            }
+        }
 
     }
     add(command,cb){
