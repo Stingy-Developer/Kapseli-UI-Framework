@@ -1,6 +1,6 @@
 {
   "name": "@stingydev/kapseli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "This project is redesigned to update the aim of the project. You can see details for new design at [Wiki Page](https://github.com/Swindler36/Kapseli-UI-Framework/wiki).",
   "main": "src/index.js",
   "scripts": {
