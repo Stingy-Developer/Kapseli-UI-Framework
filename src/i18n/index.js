@@ -2,7 +2,8 @@ export class I18n{
     constructor(config,self){
         this.config = {
             "locale": "en",
-            "messages": {}
+            "messages": {},
+            ...config
         };
         this.event = self.Event;
     }
