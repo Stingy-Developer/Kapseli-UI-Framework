@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">Kapseli UI Framework</h1>
 
-![Code Size](https://badgen.net/badgesize/brotli/https://raw.githubusercontent.com/Swindler36/Kapseli-UI-Framework/main/dist/bundle.js?style=flat-square&label=size&color=47BB77&labelColor=000) 
+![Code Size](https://badgen.net/badgesize/brotli/https://raw.githubusercontent.com/Swindler36/Kapseli-UI-Framework/main/dist/js/bundle.js?style=flat-square&label=size&color=47BB77&labelColor=000)
 [![NPM Version](https://img.shields.io/npm/v/@stingydev/kapseli?style=flat-square&color=47BB77&labelColor=000)](https://www.npmjs.com/package/@stingydev/kapseli)
 
 A UI Framework for creating a SPA dashboard application.
