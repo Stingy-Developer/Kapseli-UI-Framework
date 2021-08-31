@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./scss/dist/bootstrap.min.css">
+    <link rel="stylesheet" href="./dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
     rel="stylesheet">
 </head>
@@ -13,19 +13,7 @@
     <div id="app">
 
       <div class="container">
-        <btn text="Button">
-          <span>
-            good
-          </span>
-          <span>
-            bad
-          </span>
-        </btn>
-        <div v-for="h in hello">
-              <button class="btn btn-success" @click="world">
-                <data v-data="h.value"></data>
-              </button>
-        </div>
+        <data v-data="t:iyi"></data>
       
       
       <div class="panel panel-end" tabindex="-1">
@@ -55,12 +43,19 @@
     </div> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-      <script src="./dist/bundle.js"></script>
+      <script src="./dist/js/bundle.js"></script>
 
     <script>
 
 
 let x = Kapseli.init({
+  i18n:{
+    "messages": {
+      "en": {
+        "iyi" : "good12"
+      }
+    }
+  },
   view:{
     el:"#app",
     data:{
