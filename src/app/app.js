@@ -111,6 +111,7 @@ const Kapseli = {
 
     setLocale(l){
         this.I18n.setLocale(l);
+        this.render()
     }
 
     
