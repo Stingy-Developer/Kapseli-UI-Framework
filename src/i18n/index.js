@@ -2,7 +2,8 @@ export class I18n{
     constructor(config,self){
         this.config = {
             "locale": "en",
-            "messages": {}
+            "messages": {},
+            ...config
         };
         this.event = self.Event;
     }
@@ -45,7 +46,8 @@ export class I18n{
         });   
     }
     t(id){
-        return this.config["messages"][ this.config["locale"] ][id]; 
+        let localized_message = this.config["messages"][ this.config["locale"] ][id]; 
+        return localized_message !== undefined ? localized_message : "?"
     }
 }
 

@@ -10,6 +10,7 @@ import onChange from "on-change";
 
 class VDom{
     constructor(conf,self){
+        this.klass = self !== undefined ? self : {};
         this.event = self !== undefined ? self.Event : {};
         let config = conf ? conf : false;
         this.$directives = {};
@@ -122,6 +123,11 @@ class VDom{
 
     getData(key_str){
         let data = this.data;
+        
+        // data will translate
+        if( key_str.startsWith("t:") ){
+            return this.klass.I18n.t( key_str.substring(2) )
+        } 
         let array = key_str.split(".");
 
         for (let i = 0; i < array.length; i++) {

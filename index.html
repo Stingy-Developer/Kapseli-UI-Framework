@@ -5,62 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./scss/dist/bootstrap.min.css">
+    <link rel="stylesheet" href="./dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
     rel="stylesheet">
 </head>
 <body>
     <div id="app">
-
-      <div class="container">
-        <btn text="Button">
-          <span>
-            good
-          </span>
-          <span>
-            bad
-          </span>
-        </btn>
-        <div v-for="h in hello">
-              <button class="btn btn-success" @click="world">
-                <data v-data="h.value"></data>
-              </button>
-        </div>
+        <data v-data="t:not_found"></data>
       
-      
-      <div class="panel panel-end" tabindex="-1">
-        <div class="panel-header">
-          <h5 class="panel-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="panel-body small">
-          ...
-        </div>
-      </div>
-      
-      <fp list="l"></fp>
-      <chart/>
-      </div>
-
-      <form id="form1" method="post">
-        <p>Press "Info" for form details, or "Set" to change those details.</p>
-        <p>
-         <input type="submit" value="submit">
-        </p>
-       
-        <textarea id="form-info" rows="15" cols="20"></textarea>
-       </form>
-
 
     </div> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-      <script src="./dist/bundle.js"></script>
+      <script src="./dist/js/bundle.js"></script>
 
     <script>
 
 
 let x = Kapseli.init({
+  i18n:{
+    "messages": {
+      "en": {
+        "not_found" : "Not Found!"
+      },
+      "tr": {
+        "not_found" : "Bulunamadı!"
+      }
+    }
+  },
   view:{
     el:"#app",
     data:{
