@@ -33,9 +33,15 @@ export class Component extends VDom{
         this.$components = {};
         this._data = config.data || {};
 
-        let el = document.createElement("div");
-        el.innerHTML = config.template;
-        this.el = el.firstElementChild;
+        if( typeof config.template === "string" ){
+            let el = document.createElement("div");
+            el.innerHTML = config.template;
+            this.el = el.firstElementChild;
+        }else if( typeof config.template === "object" ){
+            this.el = config.template;
+            //this._beautyVdom(this.el);
+        }
+        
         setVFor(this);
         setVIf(this);
     }
@@ -46,7 +52,33 @@ export class Component extends VDom{
         this.slots = children;
     }
 
+    _beautyVdom(vdom){
+        let newVDOM = {
+            tag: vdom.tag,
+            props: {},
+            children: []
+        }
+        if(vdom && typeof vdom !== "string"){
+            newVDOM.props = this._beautyAttrForJSX( vdom.props );
+
+            for (let i = 0; i < vdom.children.length; i++) {
+                newVDOM.children.push( this._beautyVdom( vdom.children[i] ) )
+            }
+        }
+
+        return newVDOM;
+
+    }
+
     getData(key_str){
+        if( key_str === undefined ){
+            return data;
+        }
+        // data will translate
+        if( key_str.startsWith("t:") ){
+            return this.klass.I18n.t( key_str.substring(2) )
+        } 
+
         let data = this.data ? this.data : this._data;
         let array = key_str.split(".");
 
@@ -103,7 +135,17 @@ export class Component extends VDom{
     renderVDom(){
         let renderedvdom = false;
         if(!this.app){
-            this.$vdom = this._getVdom(this.el);
+            
+            try {
+                if( this.el instanceof HTMLElement){
+                    this.$vdom = this._getVdom(this.el);
+                }else{
+                    this.$vdom = this._beautyVdom(this.el);
+                }
+            } catch (error) {
+                console.error(`Compiling Error=> ${error}`);
+            }     
+            
             renderedvdom = this.renderGenerators(this.$vdom);
             renderedvdom = this.renderBindings(renderedvdom);
 
@@ -178,7 +220,7 @@ export class Component extends VDom{
 
     render(){
         
-        this.$components = self.$components;
+        this.$components = this.self.$components;
         this.renderVDom();
         if( this._data && !this.data ){
             this.data = onChange(

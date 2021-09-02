@@ -66,20 +66,76 @@ class VDom{
 
     _beautyAttr(attr){
         var attrs = {};
+        attrs["class"] = {};
+
+        if(attr === undefined) return {}
+
         for (let i = 0; i < attr.length; i++) {
             const at = attr[i];
 
             if(at.name == "classlist"){
-                attrs["className"] = className( this.__attr_class(at.value) )
+                let value = this.getData(at.value);
+                if(value)
+                attrs["class"] = {
+                    ...attrs["class"] ? attrs["class"] : {},
+                    ...this.__attr_class( value ) 
+                }
             }else if(at.name == "style"){
                 attrs["style"] = style( this.__attr_style(at.value) )
+            }else if(at.name == "class"){
+                attrs["class"] = {
+                    ...this.__attr_class(at.value)
+                };
+            
             }else{
                 attrs[at.name] = at.value;
             }
         }
 
+        attrs["class"] = className( attrs["class"] );
+
         return attrs;
     }
+
+    _beautyAttrForJSX(attr){
+        var attrs = {};
+        attrs["class"] = {};
+
+        if(attr === undefined) return {}
+        for (const name in attr) {
+            if (Object.hasOwnProperty.call(attr, name)) {
+                const value = attr[name];
+
+                if(name == "classlist"){
+                    let v = this.getData(value);
+                    
+                    if(v)
+                    attrs["class"] = {
+                        ...attrs["class"] ? attrs["class"] : {},
+                        ...this.__attr_class( v ) 
+                    }
+                }else if(name == "style"){
+                    attrs["style"] = style( this.__attr_style(value) )
+                }else if(name == "class"){
+                    attrs["class"] = {
+                        ...this.__attr_class(value)
+                    };
+                
+                }else{
+                    attrs[name] = value;
+                }
+                
+            }
+        }
+  
+
+           
+   
+        attrs["class"] = className( attrs["class"] );
+
+        return attrs;
+    }
+
 
     h (tag, props, children) {
         return { tag, props, children }
@@ -87,11 +143,14 @@ class VDom{
     _getVdom(el){
         let childs = []; 
         if(el && el.nodeName != "#text"){
-            for (let i = 0; i < el.childNodes.length; i++) {
+            if( el.childNodes !== undefined ){
+                for (let i = 0; i < el.childNodes.length; i++) {
     
-                var element = this._getVdom(el.childNodes[i]);
-                childs.push(element);       
+                    var element = this._getVdom(el.childNodes[i]);
+                    childs.push(element);       
+                }
             }
+            
             return this.h( el.tagName, this._beautyAttr(el.attributes), childs ); 
         }else{
             return el.data;
@@ -125,7 +184,7 @@ class VDom{
         let data = this.data;
         
         // data will translate
-        if( key_str.startsWith("t:") ){
+        if( key_str !== undefined && key_str.startsWith("t:") ){
             return this.klass.I18n.t( key_str.substring(2) )
         } 
         let array = key_str.split(".");
@@ -227,7 +286,12 @@ class VDom{
     renderVDom(){
         let renderedvdom = false;
         if(!this.app){
-            this.$vdom = this._getVdom(this.el);
+            try {
+                if( this.el instanceof HTMLElement)
+                this.$vdom = this._getVdom(this.el);
+            } catch (error) {
+                this.$vdom = this.el
+            }            
             renderedvdom = this.renderGenerators(this.$vdom);
             renderedvdom = this.renderBindings(renderedvdom);
 
