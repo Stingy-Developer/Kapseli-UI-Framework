@@ -8,11 +8,23 @@
     <link rel="stylesheet" href="./dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
     rel="stylesheet">
+    
 </head>
 <body>
     <div id="app">
+      <div class="container">
+              
+      <div class="alert" classlist="id"><data v-data="t:not_found"></data></div>
+      <alert type="alert-info" >
         <data v-data="t:not_found"></data>
-      
+      </alert>
+      <button class="btn btn-info" @click="changeLang">
+        <data v-data="lang">
+
+        </data>
+      </button>
+      </div>
+
 
     </div> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -22,7 +34,9 @@
     <script>
 
 
-let x = Kapseli.init({
+
+let App = Kapseli.init({
+  plugins: ["started"],
   i18n:{
     "messages": {
       "en": {
@@ -36,8 +50,9 @@ let x = Kapseli.init({
   view:{
     el:"#app",
     data:{
+      id:"alert-"+"danger",
         hello:["key","v"],
-        show: true,
+        lang: "tr",
         l: [
           {
             label:'Home',
@@ -66,12 +81,18 @@ let x = Kapseli.init({
         },
         mymouseover(){
             console.log("mouseover");
+        },
+        changeLang(){
+          App.setLocale(
+            App.View.data.lang
+          )
+          App.View.data.lang = App.I18n.getLocale() == "en" ? "tr" : "en";
         }
     }
 }});
 
 
-x.render();
+App.render();
 
 
 /*
