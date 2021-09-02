@@ -4,20 +4,23 @@ export class Alert extends Component{
     constructor(type,content) {
         super({
             data:{
-                content: content != "" ? content : "This is an alert!"
+                type: "alert-" + type
             },
-            template:`
-            <div class="alert alert-${type}" role="alert">
-                <data v-data="content"></data>
-            </div>
-            `,
+            template:
+            (<div class="alert" classlist="type" role="alert">
+                <slot></slot>
+            </div>),
             methods:{
             },
             props:{
-                content: {}
+                type: {}
             }
         });
         
+    }
+
+    setType(type){
+        this.data.type = `alert-${type}`
     }
 
 }
