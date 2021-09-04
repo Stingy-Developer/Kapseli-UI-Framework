@@ -12,11 +12,15 @@ export class Event{
             this.event[name].forEach(function(e){
                 e(args);
             })
+        }else{
+            console.error(`EventError: '${name}' Event is not found!`)
         }
     }
     on(name,cb){
         if( name in this.event ){
             this.event[name].push(cb);
+        }else{
+            console.error(`EventError: '${name}' Event is not found!`)
         }
     }
     get(name){
@@ -34,6 +38,8 @@ export class Event{
     remove(name){
         if( name in this.event ){
             delete this.event[name];
+        }else{
+            console.error(`EventError: '${name}' Event is not found!`)
         }
     }
 }

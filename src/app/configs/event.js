@@ -30,4 +30,9 @@ export function setEvents(self){
     ["init","render","refresh","locale"].forEach(l => {
         self.Event.register(`app:${l}`);
     });
+
+    //i18n
+    ["add","update","locale"].forEach(l => {
+        self.Event.register(`i18n:${l}`);
+    });
 }

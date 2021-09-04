@@ -87,7 +87,7 @@ const Kapseli = {
 
     on(name,cb){
         if( name && typeof cb == "function"){
-            this.Event.register(name,cb);
+            this.Event.on(name,cb);
         }else{
             console.log(`This is not valid event connection for ${name}!`)
         }
@@ -95,7 +95,7 @@ const Kapseli = {
 
     once(name,cb){
         if( name && typeof cb == "function"){
-            this.Event.register(name,
+            this.Event.on(name,
                 (args) => {
                     cb(args);
                     this.Event.remove(name);
@@ -111,6 +111,8 @@ const Kapseli = {
 
     setLocale(l){
         this.I18n.setLocale(l);
+
+        this.Event.run("app:locale",l);
         this.render()
     }
 
