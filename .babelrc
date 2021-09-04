@@ -13,7 +13,7 @@
     ],
     
     "plugins": [
-        ["@babel/plugin-transform-react-jsx", { "pragma": "m", "pragmaFrag": "'fragment'" }]
+        ["@babel/plugin-transform-react-jsx", { "pragma": "window.jsx", "pragmaFrag": "'fragment'" }]
     ],
     "comments": false   
 }

@@ -8,21 +8,33 @@
     <link rel="stylesheet" href="./dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
     rel="stylesheet">
+    
 </head>
 <body>
     <div id="app">
-        <data v-data="t:not_found"></data>
+      <div class="container" v-for="i in hello" >
+      <div @click="world">
+        <alert type="alert-info">
+        <data v-data="i.value"></data>
+      </alert>
+      <button class="btn btn-sucess" @click="changeLang">
+        <data v-data="lang"></data>
+      </button>
+      </div>
       
+      </div>
+
 
     </div> 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
       <script src="./dist/js/bundle.js"></script>
 
     <script>
 
 
-let x = Kapseli.init({
+
+let App = Kapseli.init({
+  plugins: ["started"],
   i18n:{
     "messages": {
       "en": {
@@ -36,8 +48,9 @@ let x = Kapseli.init({
   view:{
     el:"#app",
     data:{
+      id:"alert-"+"danger",
         hello:["key","v"],
-        show: true,
+        lang: "tr",
         l: [
           {
             label:'Home',
@@ -59,19 +72,25 @@ let x = Kapseli.init({
     },
     methods:{
         world(e){
-            x.View.data.hello.push(Math.random().toString(36).substr(2,7));
+            App.View.data.hello.push(Math.random().toString(36).substr(2,7));
         },
         p(){
             console.log("waowww")
         },
         mymouseover(){
             console.log("mouseover");
+        },
+        changeLang(){
+          App.setLocale(
+            App.View.data.lang
+          )
+          App.View.data.lang = App.I18n.getLocale() == "en" ? "tr" : "en";
         }
-    }
+    },
 }});
 
 
-x.render();
+App.render();
 
 
 /*
