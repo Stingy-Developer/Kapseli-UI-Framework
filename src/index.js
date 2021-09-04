@@ -28,10 +28,3 @@ import { Alert } from "./components/Alert";
 
 window.Kapseli = Kapseli;
 Kapseli.Component = Component;
-
-
-Kapseli.plugins.add("started",(kap,opts)=>{
-      let a = new Alert("danger","Test");
-      kap.View.addComponent("ALERT",a)
-  })
-
