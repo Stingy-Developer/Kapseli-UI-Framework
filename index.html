@@ -12,22 +12,20 @@
 </head>
 <body>
     <div id="app">
-      <div class="container">
-              
-      <div class="alert" classlist="id"><data v-data="t:not_found"></data></div>
-      <alert type="alert-info" >
-        <data v-data="t:not_found"></data>
+      <div class="container" v-for="i in hello" >
+      <div @click="world">
+        <alert type="alert-info">
+        <data v-data="i.value"></data>
       </alert>
-      <button class="btn btn-info" @click="changeLang">
-        <data v-data="lang">
-
-        </data>
+      <button class="btn btn-sucess" @click="changeLang">
+        <data v-data="lang"></data>
       </button>
+      </div>
+      
       </div>
 
 
     </div> 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
       <script src="./dist/js/bundle.js"></script>
 
@@ -74,7 +72,7 @@ let App = Kapseli.init({
     },
     methods:{
         world(e){
-            x.View.data.hello.push(Math.random().toString(36).substr(2,7));
+            App.View.data.hello.push(Math.random().toString(36).substr(2,7));
         },
         p(){
             console.log("waowww")
@@ -88,7 +86,7 @@ let App = Kapseli.init({
           )
           App.View.data.lang = App.I18n.getLocale() == "en" ? "tr" : "en";
         }
-    }
+    },
 }});
 
 
