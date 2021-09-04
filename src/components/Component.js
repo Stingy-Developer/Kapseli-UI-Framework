@@ -27,7 +27,6 @@ export class Component extends VDom{
         this.props = config.props ? config.props : [];
         this.$props = {};
         this.$directives = {};
-        this.$generators = {};
         this.methods = config.methods ? config.methods : {};
         this.notListenedData = {};
         this.$components = {};
@@ -42,8 +41,6 @@ export class Component extends VDom{
             //this._beautyVdom(this.el);
         }
         
-        setVFor(this);
-        setVIf(this);
     }
 
     init(self,props,children){
