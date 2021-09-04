@@ -73,7 +73,7 @@ class VDom{
         for (let i = 0; i < attr.length; i++) {
             const at = attr[i];
 
-            if(at.name == "classlist"){
+            if(at.name == "className"){
                 let value = this.getData(at.value);
                 if(value)
                 attrs["class"] = {
@@ -93,6 +93,8 @@ class VDom{
         }
 
         attrs["class"] = className( attrs["class"] );
+        if( attrs["class"] == "" ) delete attrs["class"];
+
 
         return attrs;
     }
@@ -106,7 +108,7 @@ class VDom{
             if (Object.hasOwnProperty.call(attr, name)) {
                 const value = attr[name];
 
-                if(name == "classlist"){
+                if(name == "className"){
                     let v = this.getData(value);
                     
                     if(v)
@@ -132,6 +134,7 @@ class VDom{
            
    
         attrs["class"] = className( attrs["class"] );
+        if( attrs["class"] == "" ) delete attrs["class"];
 
         return attrs;
     }

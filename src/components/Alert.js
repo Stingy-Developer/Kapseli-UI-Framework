@@ -1,13 +1,13 @@
 import { Component } from "./Component";
 
 export class Alert extends Component{
-    constructor(type,content) {
+    constructor(type) {
         super({
             data:{
                 type: "alert-" + type
             },
             template:
-            (<div class="alert" classlist="type" role="alert">
+            (<div class="alert" className="type" role="alert">
                 <slot></slot>
             </div>),
             methods:{
