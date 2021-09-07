@@ -22,8 +22,6 @@ window.jsx = (tag,props,...children) => {
 
 import { Kapseli } from "./app/app";
 import { Component } from "./components/Component";
-import { Alert } from "./components/Alert";
-
 
 
 window.Kapseli = Kapseli;
