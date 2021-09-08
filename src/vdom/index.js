@@ -258,14 +258,14 @@ class VDom{
         return vdom;    
     }
 
-    renderBindings(_vdom){
+    renderBindings(_vdom,shortcut = "bind-"){
         let vdom = JSON.parse(JSON.stringify(_vdom));
         if(vdom && typeof vdom !== "string"){
             let props = Object.keys(vdom.props);
 
             for (let i = 0; i < props.length; i++) {
                 const prop = props[i];
-                if( prop.startsWith(":") ){
+                if( prop.startsWith(shortcut) ){
                     let bind_value = vdom.props[prop];
                     let d_val = this.getData(bind_value);
                     
@@ -273,7 +273,7 @@ class VDom{
                         bind_value = d_val;
                     }
                     
-                    vdom.props[prop.substring(1)] = bind_value;
+                    vdom.props[prop.substring( shortcut.length )] = bind_value;
                 }
             }
 

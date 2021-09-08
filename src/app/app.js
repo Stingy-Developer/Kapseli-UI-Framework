@@ -35,9 +35,11 @@ const Kapseli = {
         if(config.plugins){
             let plgs = config.plugins;
             for (let i = 0; i < plgs.length; i++) {
+                
                 if( plgs[i] in this.plugins.plugins){
+                    
                     try {
-
+                        
                         this.plugins.plugins[ plgs[i] ](
                             this, 
                             plgs[i] in config.pluginOpts ? config.pluginOpts[plgs[i]] : {}
