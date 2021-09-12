@@ -1,15 +1,15 @@
-import { m,createElement,patch,className,style } from "../compiler/index";
+import { m, createElement, patch, className, style } from "../compiler/index";
 import { setVFor } from "../vdom/generators/v-for";
 import { setVIf } from "../vdom/generators/v-if";
 import onChange from "on-change";
-
+//import * as Vue from "vue";
 /**
  * TODO:         attrs["data-object-id"] = attrs["data-object-id"] ? attrs["data-object-id"] : Math.random().toString(36).substr(2,7);
  * To improve performance put object token. 
  */
 
-class VDom{
-    constructor(conf,self){
+class VDom {
+    constructor(conf, self) {
         this.klass = self !== undefined ? self : {};
         this.event = self !== undefined ? self.Event : {};
         let config = conf ? conf : false;
@@ -20,10 +20,10 @@ class VDom{
         this.notListenedData = {};
         this.$components = {};
         this.mounted = [];
-        
-        if(config.data){
-          
-            this.data = onChange(config.data,()=>{
+
+        if (config.data) {
+
+            this.data = onChange(config.data, () => {
                 this.render();
             });
         }
@@ -32,295 +32,301 @@ class VDom{
         setVIf(this);
     }
 
-    throwKeyError(key,key_str){
-        if(!key) throw `'${key_str}' property is not defined!`;
+    throwKeyError(key, key_str) {
+        if (!key) throw `'${key_str}' property is not defined!`;
     }
 
-    getEl(selector){
+    getEl(selector) {
         let el = document.querySelector(selector);
-    
-        if(el){
+
+        if (el) {
             return el;
-        }else{
+        } else {
             return false;
         }
     }
 
-    __attr_class(classname){
+    __attr_class(classname) {
         let classes = {};
         var d = classname.split(" ");
         for (let i = 0; i < d.length; i++) {
-            classes[ d[i] ] = true;
+            classes[d[i]] = true;
         }
         return classes;
     }
 
-    __attr_style(style){
+    __attr_style(style) {
         let styles = {};
         var d = style.split(";");
         for (let i = 0; i < d.length; i++) {
-            styles[ d[i].split(":")[0] ] = d[i].split(":")[1];
+            styles[d[i].split(":")[0]] = d[i].split(":")[1];
         }
         return styles;
     }
 
-    _beautyAttr(attr){
+    _beautyAttr(attr) {
         var attrs = {};
         attrs["class"] = {};
 
-        if(attr === undefined) return {}
+        if (attr === undefined) return {}
 
         for (let i = 0; i < attr.length; i++) {
             const at = attr[i];
 
-            if(at.name == "className"){
+            if (at.name == "className") {
                 let value = this.getData(at.value);
-                if(value)
-                attrs["class"] = {
-                    ...attrs["class"] ? attrs["class"] : {},
-                    ...this.__attr_class( value ) 
-                }
-            }else if(at.name == "style"){
-                attrs["style"] = style( this.__attr_style(at.value) )
-            }else if(at.name == "class"){
+                if (value)
+                    attrs["class"] = {
+                        ...attrs["class"] ? attrs["class"] : {},
+                        ...this.__attr_class(value)
+                    }
+            } else if (at.name == "style") {
+                attrs["style"] = style(this.__attr_style(at.value))
+            } else if (at.name == "class") {
                 attrs["class"] = {
                     ...this.__attr_class(at.value)
                 };
-            
-            }else{
+
+            } else {
                 attrs[at.name] = at.value;
             }
         }
 
-        attrs["class"] = className( attrs["class"] );
-        if( attrs["class"] == "" ) delete attrs["class"];
+        attrs["class"] = className(attrs["class"]);
+        if (attrs["class"] == "") delete attrs["class"];
 
 
         return attrs;
     }
 
-    _beautyAttrForJSX(attr){
+    _beautyAttrForJSX(attr) {
         var attrs = {};
         attrs["class"] = {};
 
-        if(attr === undefined) return {}
+        if (attr === undefined) return {}
         for (const name in attr) {
             if (Object.hasOwnProperty.call(attr, name)) {
                 const value = attr[name];
 
-                if(name == "className"){
+                if (name == "className") {
                     let v = this.getData(value);
-                    
-                    if(v)
-                    attrs["class"] = {
-                        ...attrs["class"] ? attrs["class"] : {},
-                        ...this.__attr_class( v ) 
-                    }
-                }else if(name == "style"){
-                    attrs["style"] = style( this.__attr_style(value) )
-                }else if(name == "class"){
+
+                    if (v)
+                        attrs["class"] = {
+                            ...attrs["class"] ? attrs["class"] : {},
+                            ...this.__attr_class(v)
+                        }
+                } else if (name == "style") {
+                    attrs["style"] = style(this.__attr_style(value))
+                } else if (name == "class") {
                     attrs["class"] = {
                         ...this.__attr_class(value)
                     };
-                
-                }else{
+
+                } else {
                     attrs[name] = value;
                 }
-                
+
             }
         }
-  
 
-           
-   
-        attrs["class"] = className( attrs["class"] );
-        if( attrs["class"] == "" ) delete attrs["class"];
+
+
+
+        attrs["class"] = className(attrs["class"]);
+        if (attrs["class"] == "") delete attrs["class"];
 
         return attrs;
     }
 
 
-    h (tag, props, children) {
+    h(tag, props, children) {
         return { tag, props, children }
     }
-    _getVdom(el){
-        let childs = []; 
-        if(el && el.nodeName != "#text"){
-            if( el.childNodes !== undefined ){
+    _getVdom(el) {
+        let childs = [];
+        if (el && el.nodeName != "#text") {
+            if (el.childNodes !== undefined) {
                 for (let i = 0; i < el.childNodes.length; i++) {
-    
+
                     var element = this._getVdom(el.childNodes[i]);
-                    childs.push(element);       
+                    childs.push(element);
                 }
             }
-            
-            return this.h( el.tagName, this._beautyAttr(el.attributes), childs ); 
-        }else{
+
+            return this.h(el.tagName, this._beautyAttr(el.attributes), childs);
+        } else {
             return el.data;
         }
-      
+
     }
 
-    addDirective(id,obj){
+    addDirective(id, obj) {
         this.$directives[id] = obj;
     }
 
-    getDirective(id){
+    getDirective(id) {
         return this.$directives[id] ? this.$directives[id] : false;
     }
 
-    addComponent(tag,component){
+    addComponent(tag, component) {
         this.$components[tag] = component;
     }
 
-    getComponent(tag){
+    getComponent(tag) {
         return this.$components[tag];
     }
 
-    renderComponent(tag,props,children){
+    renderComponent(tag, props, children) {
         let component = this.getComponent(tag);
-        component.init(this,props,children);
+        component.init(this, props, children);
         return component.render();
     }
 
-    getData(key_str){
-        let data = this.data;
-        
+    getData(key_str, mode = "normal") {
+        let data = {}
+        if (mode == "normal") {
+            data = this.data;
+        } else if (mode == "prop") {
+            data = this.$props;
+        }
+
+
         // data will translate
-        if( key_str !== undefined && key_str.startsWith("t:") ){
-            return this.klass.I18n.t( key_str.substring(2) )
-        } 
+        if (key_str !== undefined && key_str.startsWith("t:")) {
+            return this.klass.I18n.t(key_str.substring(2))
+        }
         let array = key_str.split(".");
 
         for (let i = 0; i < array.length; i++) {
             try {
-                data = data[ array[i] ];
+                data = data[array[i]];
 
-                if(data === undefined){
+                if (data === undefined) {
                     let nlistdata = this.notListenedData;
                     let nlistarray = key_str.split(".");
 
                     for (let i = 0; i < nlistarray.length; i++) {
                         try {
-                            nlistdata = nlistdata[ nlistarray[i] ];
+                            nlistdata = nlistdata[nlistarray[i]];
 
                         } catch (error) {
-                            return "";   
+                            return "";
                         }
                     }
                     return nlistdata;
                 }
 
             } catch (error) {
-                return "";   
+                return "";
             }
         }
 
         return data;
     }
 
-    getMethod(key_str){
-        if(this.methods){
+    getMethod(key_str) {
+        if (this.methods) {
             return this.methods[key_str];
-        }else{
+        } else {
             throw `'${key_str}' property is not defined in 'methods'!`;
         }
     }
 
-    addGenerator(key,cb){
+    addGenerator(key, cb) {
         this.$generators[key] = cb; //cb(expression,vdom,this)
     }
 
-    getGenerator(key){
+    getGenerator(key) {
         return this.$generators[key] ? this.$generators[key] : false;
     }
 
-    renderGenerators(_vdom){
+    renderGenerators(_vdom) {
         let vdom = JSON.parse(JSON.stringify(_vdom));
-        this.throwKeyError(_vdom,'vdom');
-        if(vdom && typeof vdom !== "string"){
+        this.throwKeyError(_vdom, 'vdom');
+        if (vdom && typeof vdom !== "string") {
             let props = Object.keys(vdom.props);
 
             for (let i = 0; i < props.length; i++) {
                 const prop = props[i];
-                const generator = this.getGenerator( prop );
-                if(generator){
-                    generator(vdom.props[prop],vdom,this );
+                const generator = this.getGenerator(prop);
+                if (generator) {
+                    generator(vdom.props[prop], vdom, this);
                 }
             }
 
-        
+
             for (let i = 0; i < vdom.children.length; i++) {
-                vdom.children[i] = this.renderGenerators(vdom.children[i])    
-            }   
+                vdom.children[i] = this.renderGenerators(vdom.children[i])
+            }
         }
 
-        return vdom;    
+        return vdom;
     }
 
-    renderBindings(_vdom,shortcut = "bind-"){
+    renderBindings(_vdom, shortcut = "bind-") {
         let vdom = JSON.parse(JSON.stringify(_vdom));
-        if(vdom && typeof vdom !== "string"){
+        if (vdom && typeof vdom !== "string") {
             let props = Object.keys(vdom.props);
 
             for (let i = 0; i < props.length; i++) {
                 const prop = props[i];
-                if( prop.startsWith(shortcut) ){
+                if (prop.startsWith(shortcut)) {
                     let bind_value = vdom.props[prop];
                     let d_val = this.getData(bind_value);
-                    
-                    if(d_val !== undefined){
+
+                    if (d_val !== undefined) {
                         bind_value = d_val;
                     }
-                    
-                    vdom.props[prop.substring( shortcut.length )] = bind_value;
+
+                    vdom.props[prop.substring(shortcut.length)] = bind_value;
                 }
             }
 
-        
+
             for (let i = 0; i < vdom.children.length; i++) {
-                vdom.children[i] = this.renderBindings(vdom.children[i])    
-            }   
+                vdom.children[i] = this.renderBindings(vdom.children[i])
+            }
         }
 
-        return vdom;    
+        return vdom;
     }
 
-    renderVDom(){
+    renderVDom() {
         let renderedvdom = false;
-        if(!this.app){
+        if (!this.app) {
             try {
-                if( this.el instanceof HTMLElement)
-                this.$vdom = this._getVdom(this.el);
+                if (this.el instanceof HTMLElement)
+                    this.$vdom = this._getVdom(this.el);
             } catch (error) {
                 this.$vdom = this.el
-            }            
+            }
             renderedvdom = this.renderGenerators(this.$vdom);
             renderedvdom = this.renderBindings(renderedvdom);
 
             this.$current_vdom = this.renderObject(renderedvdom);
-            this.app = createElement( 
-               this.$current_vdom,this 
-                );
-            this.el.parentElement.replaceChild(this.app,this.el);
+            this.app = createElement(
+                this.$current_vdom, this
+            );
+            this.el.parentElement.replaceChild(this.app, this.el);
 
             for (let i = 0; i < this.mounted.length; i++) {
                 this.mounted[i]();
             }
-            
-        }else{
+
+        } else {
             renderedvdom = this.renderGenerators(this.$vdom);
             let vdom = this.renderObject(renderedvdom);
-            patch(this.app,vdom,this.$current_vdom,this);
+            patch(this.app, vdom, this.$current_vdom, this);
             this.$current_vdom = vdom;
         }
 
     }
 
-    renderObject(_object){
+    renderObject(_object) {
         let obj = JSON.parse(JSON.stringify(_object));
-        if(this.$components !== undefined && obj.tag in this.$components){
-            let comp = this.renderComponent(obj.tag,obj.props,obj.children);
+        if (this.$components !== undefined && obj.tag in this.$components) {
+            let comp = this.renderComponent(obj.tag, obj.props, obj.children);
             obj = comp.vdom;
             this.methods = {
                 ...this.methods,
@@ -328,13 +334,13 @@ class VDom{
             };
             this.mounted.push(comp.mounted);
         }
-        
-        if(obj.props){
-            var arr = Object.keys( obj.props );
+
+        if (obj.props) {
+            var arr = Object.keys(obj.props);
             obj["$directives"] = {};
             for (let i = 0; i < arr.length; i++) {
                 const prop = arr[i];
-                if(prop.startsWith("@")){
+                if (prop.startsWith("@")) {
                     obj["$directives"][prop] = obj.props[prop];
                 }
             }
@@ -342,30 +348,30 @@ class VDom{
             obj["$bindings"] = {};
             for (let i = 0; i < arr.length; i++) {
                 const prop = arr[i];
-                if(prop.startsWith(":")){
+                if (prop.startsWith(":")) {
                     obj["$bindings"][prop] = obj.props[prop];
                 }
             }
-        
+
         }
-        
-        if(obj.tag == "DATA"){
-            let value = this.getData( obj.props["v-data"] );
-            if(value !== ""){
+
+        if (obj.tag == "DATA") {
+            let value = this.getData(obj.props["v-data"]);
+            if (value !== "") {
                 obj = String(value);
             }
-        }else if( typeof obj === "string" ){
+        } else if (typeof obj === "string") {
             obj = obj;
-        }else{
+        } else {
             for (let i = 0; i < obj.children.length; i++) {
-                obj.children[i] = this.renderObject( obj.children[i] ); 
+                obj.children[i] = this.renderObject(obj.children[i]);
             }
         }
-        
+
         return obj;
     }
 
-    render(){
+    render() {
         this.renderVDom();
         this.notListenedData = {};
     }

@@ -10,8 +10,8 @@
                 ]
             }
         }]
+        
     ],
-    
     "plugins": [
         ["@babel/plugin-transform-react-jsx", { "pragma": "window.jsx", "pragmaFrag": "'fragment'" }]
     ],

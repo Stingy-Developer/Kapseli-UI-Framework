@@ -7,6 +7,8 @@ import { Panel } from "../panel/index";
 import { Plugin } from "../plugin/index";
 import { Route } from "../route/index";
 import { VDom } from "../vdom";
+//import * as Vue from "vue";
+
 
 // configs
 import { setCommands } from "./configs/command";
@@ -26,7 +28,7 @@ const Kapseli = {
         this.Command = new Command( config.command ? config.command : {},this );
         this.Route = new Route( config.route ? config.route : {},this );
         this.View = new VDom( config.view ? config.view : {},this );
-        
+        //this.View = Vue.createApp(config.view ? config.view : {}).mount(config.el)
 
         setEvents(this);
 
@@ -37,17 +39,24 @@ const Kapseli = {
             for (let i = 0; i < plgs.length; i++) {
                 
                 if( plgs[i] in this.plugins.plugins){
-                    
-                    try {
+                    if( config.version === "production" ){
+                        try {
                         
+                            this.plugins.plugins[ plgs[i] ](
+                                this, 
+                                plgs[i] in config.pluginOpts ? config.pluginOpts[plgs[i]] : {}
+                            );
+
+                        } catch (error) {
+                            console.error(`PluginError: '${plgs[i]}' Plugin => ${error}`)
+                        }
+                    }else{
                         this.plugins.plugins[ plgs[i] ](
                             this, 
                             plgs[i] in config.pluginOpts ? config.pluginOpts[plgs[i]] : {}
                         );
-
-                    } catch (error) {
-                        console.error(`PluginError: '${plgs[i]}' Plugin => ${error}`)
                     }
+                    
                     
                 }else{
                     console.error(`PluginError: '${plgs[i]}' Plugin => This plugin is not registered!`)
@@ -115,7 +124,6 @@ const Kapseli = {
         this.I18n.setLocale(l);
 
         this.Event.run("app:locale",l);
-        this.render()
     }
 
     

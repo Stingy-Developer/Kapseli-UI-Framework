@@ -10,5 +10,6 @@ export let defaultConfig = {
         el: "#app",
         data: {},
         methods: {}
-    }
+    },
+    version: "development"
 }

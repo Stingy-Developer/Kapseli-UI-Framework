@@ -1,4 +1,4 @@
-import {  } from "../components/";
+
 class Panel{
     constructor(config){
         this.config = config;

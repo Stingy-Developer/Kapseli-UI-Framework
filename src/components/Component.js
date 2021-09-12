@@ -68,6 +68,9 @@ export class Component extends VDom{
     }
 
     getData(key_str){
+        let data = this.data ? this.data : this._data;
+       
+
         if( key_str === undefined ){
             return data;
         }
@@ -76,7 +79,6 @@ export class Component extends VDom{
             return this.klass.I18n.t( key_str.substring(2) )
         } 
 
-        let data = this.data ? this.data : this._data;
         let array = key_str.split(".");
 
         for (let i = 0; i < array.length; i++) {
@@ -92,14 +94,14 @@ export class Component extends VDom{
                             nlistdata = nlistdata[ nlistarray[i] ];
 
                         } catch (error) {
-                            return "";   
+                            return false;   
                         }
                     }
                     return nlistdata;
                 }
 
             } catch (error) {
-                return "";   
+                return false;   
             }
         }
 
@@ -111,19 +113,16 @@ export class Component extends VDom{
         for (const key in props) {
             if (Object.hasOwnProperty.call(props, key)) {
                 let prop_val = props[key];
-               
                 if(key in this.props){
                     var temp_val = this.self.getData(prop_val); 
-                    if( temp_val !== undefined ){
+                    if( temp_val ){
                         prop_val = temp_val;
 
                     }else if("edit" in this.props[key]){
                         prop_val = this.props[key].edit(prop_val);
                     }
                     
-                    
-                    this.$props[key] = prop_val;
-                    this._data[key] = prop_val;
+                    this.notListenedData[key] = prop_val;
                 }
             }
         }
