@@ -1,5 +1,5 @@
 let routeConfig = {
-    routes: {}
-}
+  routes: {},
+};
 
-export {routeConfig}
+export { routeConfig };
