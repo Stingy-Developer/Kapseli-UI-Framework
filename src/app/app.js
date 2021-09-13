@@ -124,6 +124,7 @@ const Kapseli = {
         this.I18n.setLocale(l);
 
         this.Event.run("app:locale",l);
+        this.render();
     }
 
     

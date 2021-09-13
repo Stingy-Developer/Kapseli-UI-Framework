@@ -183,14 +183,8 @@ class VDom {
         return component.render();
     }
 
-    getData(key_str, mode = "normal") {
+    getData(key_str) {
         let data = {}
-        if (mode == "normal") {
-            data = this.data;
-        } else if (mode == "prop") {
-            data = this.$props;
-        }
-
 
         // data will translate
         if (key_str !== undefined && key_str.startsWith("t:")) {
