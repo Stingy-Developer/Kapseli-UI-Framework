@@ -12,6 +12,12 @@
 
 A UI Framework for creating a SPA dashboard application.
 
+## Roadmap
+
+* [ ] Fixing data-bind issues on rendering
+* [ ] Backbone for render engine
+* [ ] Firebase Implementation for storage engine
+
 ## Features
 
 ### Low Level API
@@ -45,4 +51,6 @@ npm i @stingydev/kapseli
 ## Support
 
 <a href="https://www.buymeacoffee.com/stingydev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200px"></a>
+
+
 
