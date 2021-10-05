@@ -31,13 +31,16 @@ function renderObject(_object, rep, data, self) {
       if (self.getGenerator(prop)) {
         if (prop == "k-for") {
           let exps = obj.props[prop].split(" in ");
-          exps[1] = exps[1] == rep ? data : exps[1];
+
+          exps[1] = exps[1].includes(rep)
+            ? exps[1].replace(rep, data)
+            : exps[1];
           obj.props[prop] = exps.join(" in ");
         } else {
           obj.props[prop] = obj.props[prop] == rep ? data : obj.props[prop];
         }
       }
-      if (prop.startsWith(":")) {
+      if (prop.startsWith("bind-")) {
         let p_value = obj.props[prop];
         p_value = p_value.split(".")[0];
         obj.props[prop] = p_value.includes(rep)
@@ -69,15 +72,18 @@ export function setKFor(obj) {
     let rendered_childs = [];
     if (isArray(data)) {
       for (let i = 0; i < data.length; i++) {
-        self.notListenedData[`${exps[1]}_${exps[0]}_${i}`] = {
-          value: data[i],
-          index: i,
-        };
+        self.notListenedData[`${exps[1].replace(".", "_")}_${exps[0]}_${i}`] =
+          data[i];
         if (childs.length > 0) {
           for (let k = 0; k < childs.length; k++) {
             const child = childs[k];
             rendered_childs.push(
-              renderObject(child, exps[0], `${exps[1]}_${exps[0]}_${i}`, self)
+              renderObject(
+                child,
+                exps[0],
+                `${exps[1].replace(".", "_")}_${exps[0]}_${i}`,
+                self
+              )
             );
           }
         }
