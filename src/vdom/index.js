@@ -169,7 +169,7 @@ class VDom {
   }
 
   getData(key_str) {
-    let data = {};
+    let data = this.data;
 
     // data will translate
     if (key_str !== undefined && key_str.startsWith("t:")) {
@@ -189,6 +189,7 @@ class VDom {
             try {
               nlistdata = nlistdata[nlistarray[i]];
             } catch (error) {
+              console.log(error);
               return "";
             }
           }
@@ -291,8 +292,8 @@ class VDom {
       patch(this.app, vdom, this.$current_vdom, this);
       this.$current_vdom = vdom;
 
-      for (let i = 0; i < this.created.length; i++) {
-        this.created[i]();
+      for (let i = 0; i < this.updated.length; i++) {
+        this.updated[i]();
       }
     }
   }
@@ -329,7 +330,7 @@ class VDom {
     }
 
     if (obj.tag == "DATA") {
-      let value = this.getData(obj.props["v-data"]);
+      let value = this.getData(obj.props["k-data"]);
       if (value !== "") {
         obj = String(value);
       }
