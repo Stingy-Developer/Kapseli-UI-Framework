@@ -288,6 +288,8 @@ class VDom {
       }
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
+      renderedvdom = this.renderBindings(renderedvdom);
+
       let vdom = this.renderObject(renderedvdom);
       patch(this.app, vdom, this.$current_vdom, this);
       this.$current_vdom = vdom;
