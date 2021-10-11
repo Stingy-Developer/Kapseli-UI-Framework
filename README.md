@@ -16,7 +16,7 @@ A UI Framework for creating a SPA dashboard application.
 
 Plan Jamboards => [View Jamboard](https://jamboard.google.com/d/1hunm6IeiJexXnuW9XgFz2l-y8iPIZjfIvvYyiBjaRAU/edit?usp=sharing)
 
-* [ ] Fixing data-bind issues on rendering
+* [X] Fixing data-bind issues on rendering
 * [ ] Backbone for render engine
 * [ ] Firebase Implementation for storage engine
 
