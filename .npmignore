@@ -13,8 +13,7 @@ npm-debug.log
 .github
 docs
 test
-index.html
+*.html
 components.html
 kapseli-logo.png
-test.html
 sponsors

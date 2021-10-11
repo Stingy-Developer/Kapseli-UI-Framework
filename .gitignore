@@ -1,2 +1,6 @@
 /node_modules
-*.html
+tsconfig.json
+/test/template
+/index.html
+/components.html
+/test.html

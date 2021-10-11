@@ -1,17 +1,15 @@
 import { Component } from "./Component";
-import "bootstrap/js/dist/offcanvas"
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 
-
-class FloatPanel extends Component{
-    constructor(location = "start",cb) {
-        let id = Math.random().toString(36).substring(2,7);        
-        super({
-            data:{
-                location: location,
-                title: "Panel Title"
-            },
-            template:`
+class FloatPanel extends Component {
+  constructor(location = "start", cb) {
+    let id = Math.random().toString(36).substring(2, 7);
+    super({
+      data: {
+        location: location,
+        title: "Panel Title",
+      },
+      template: `
             <div class="panel panel-${location}" tabindex="-1" id="${id}">
                 <div class="panel-header">
                     <h5 class="panel-title">
@@ -24,34 +22,31 @@ class FloatPanel extends Component{
                 </div>
             </div>
             `,
-            methods:{
-                panel_hide:() => {
-                    this.$options.hide();
-                }
-            },
-            props:{
-                title:{}
-            },
-            mounted: () => {
-                this.$options = new Offcanvas(
-                    document.getElementById(id)
-                );
-            }
-        });
-    }
+      methods: {
+        panel_hide: () => {
+          this.$options.hide();
+        },
+      },
+      props: {
+        title: {},
+      },
+      mounted: () => {
+        this.$options = new Offcanvas(document.getElementById(id));
+      },
+    });
+  }
 }
 
-
-class StaticPanel extends Component{
-    constructor(location = "start",uri,body_cb,footer_cb) {
-        super({
-            data:{
-                location: location,
-                title: "Panel Title",
-                is_footer: typeof footer_cb === "function",
-                is_body: typeof body_cb === "function",
-            },
-            template:`
+class StaticPanel extends Component {
+  constructor(location = "start", uri, body_cb, footer_cb) {
+    super({
+      data: {
+        location: location,
+        title: "Panel Title",
+        is_footer: typeof footer_cb === "function",
+        is_body: typeof body_cb === "function",
+      },
+      template: `
             <div class="static-panel static-panel-${location}">
                 <a class="static-panel-header" href="${uri}">
                     <img src="https://avatars.githubusercontent.com/u/59289764?s=60&v=4" alt="">
@@ -69,17 +64,12 @@ class StaticPanel extends Component{
                 </div>
             </div>
             `,
-            methods:{
-            },
-            props:{
-                title:{}
-            },
-        });
-    }
+      methods: {},
+      props: {
+        title: {},
+      },
+    });
+  }
 }
 
-
-
-export {
-    FloatPanel,StaticPanel
-}
+export { FloatPanel, StaticPanel };

@@ -16,9 +16,11 @@
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/runtime": "^7.14.6",
     "ajaxable": "^0.2.3",
+    "backbone": "^1.4.0",
     "bootstrap": "^5.1.0",
     "core-js": "^3.16.2",
-    "on-change": "^3.0.2"
+    "on-change": "^3.0.2",
+    "vue": "^3.2.11"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

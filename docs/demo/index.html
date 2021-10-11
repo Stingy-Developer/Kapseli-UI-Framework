@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div.API id="app">
+      <div
+        class="panel panel-start"
+        tabindex="-1"
+        id="panelExample"
+        aria-labelledby="panelExampleLabel"
+      >
+        <div class="panel-header">
+          <h5 class="panel-title" id="panelExampleLabel">Dashboard</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="panel-body">
+          <div class="list-group" k-for="link in links">
+            <a
+              href="#"
+              class="list-group-item list-group-item-action"
+              k-if="link.multiple == false"
+              >A second link item</a
+            >
+            <div
+              class="dropdown list-group-item list-group-item-action"
+              k-if="link.multiple == true"
+            >
+              <a
+                class="dropdown-toggle"
+                style="width: 100%; display: block"
+                type="button"
+                data-bs-toggle="dropdown"
+                href="#"
+                ><data k-data="link.label"
+              /></a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="dropdownMenuButton1"
+                k-for="child in link.childrens"
+              >
+                <li>
+                  <a class="dropdown-item" bind-href="child.url">
+                    <data k-data="child.label"></data>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <header class="container-fluid">
+        <div class="row app-header">
+          <a
+            class="header-start"
+            data-bs-toggle="offcanvas"
+            href="#panelExample"
+            role="button"
+          >
+            <div class="header-brand">
+              <img
+                id="header-avatar"
+                src="https://avatars.githubusercontent.com/u/59289764?v=4"
+                alt=""
+              />
+            </div>
+            <div class="header-text">StingyHub</div>
+          </a>
+          <div class="header-end header-end-md">
+            <ul class="nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Docs</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  ><span class="material-icons"> add </span></a
+                >
+                <ul
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton1"
+                  k-for="link in add_links"
+                >
+                  <li k-if="link.divider == false">
+                    <a class="dropdown-item" bind-href="link.url"
+                      ><data k-data="link.label"></data
+                    ></a>
+                  </li>
+                  <li k-if="link.divider == true">
+                    <hr class="dropdown-divider" />
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                >
+                  <span>
+                    <img
+                      width="30"
+                      height="30"
+                      src="https://avatars.githubusercontent.com/u/59289764?v=4"
+                      alt=""
+                    />
+                  </span>
+                </a>
+                <ul
+                  class="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton1"
+                  k-for="link in account_links"
+                >
+                  <li k-if="link.divider == false">
+                    <a class="dropdown-item" bind-href="link.url"
+                      ><data k-data="link.label"></data
+                    ></a>
+                  </li>
+                  <li k-if="link.divider == true">
+                    <hr class="dropdown-divider" />
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="header-end header-end-sm">
+            <ul class="nav">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                >
+                  <span>
+                    <img
+                      width="30"
+                      height="30"
+                      src="https://avatars.githubusercontent.com/u/59289764?v=4"
+                      alt=""
+                    />
+                  </span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="#">Projects</a></li>
+                  <li><a class="dropdown-item" href="#">Applications</a></li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li><a class="dropdown-item" href="#">Bilings</a></li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li><a class="dropdown-item" href="#">Upgrade</a></li>
+                  <li><a class="dropdown-item" href="#">Help</a></li>
+                  <li><a class="dropdown-item" href="#">Settings</a></li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <main class="container">
+        <div class="row">
+          <div class="col-12">
+            <div bind-class="alert">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Repellendus, magni.
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/dist/js/bundle.js"></script>
+    <script>
+      let arr = new Array(50);
+      let newArray = [];
+      for (let i = 0; i < arr.length; i++) {
+        newArray.push({
+          label: "Dropdown " + i,
+          url: "#" + i,
+        });
+      }
+      let App = Kapseli.init({
+        view: {
+          el: "#app",
+          data: {
+            links: [
+              {
+                multiple: true,
+                label: "Dropdown",
+                childrens: newArray,
+              },
+            ],
+            add_links: [
+              {
+                divider: false,
+                label: "New Project",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "New Application",
+                url: "#",
+              },
+              {
+                divider: true,
+              },
+              {
+                divider: false,
+                label: "Import Project",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "Import Application",
+                url: "#",
+              },
+              {
+                divider: true,
+              },
+              {
+                divider: false,
+                label: "Export Project",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "Export Application",
+                url: "#",
+              },
+            ],
+            account_links: [
+              {
+                divider: false,
+                label: "Profile",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "Projects",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "Application",
+                url: "#",
+              },
+              {
+                divider: true,
+              },
+              {
+                divider: false,
+                label: "Billings",
+                url: "#",
+              },
+              {
+                divider: true,
+              },
+              {
+                divider: false,
+                label: "Upgrade",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "Help",
+                url: "#",
+              },
+              {
+                divider: false,
+                label: "Settings",
+                url: "#",
+              },
+              {
+                divider: true,
+              },
+              {
+                divider: false,
+                label: "Sign Out",
+                url: "#",
+              },
+            ],
+            alert: "alert alert-danger",
+          },
+        },
+      });
+
+      App.render();
+    </script>
+  </body>
+</html>
