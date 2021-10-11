@@ -3,14 +3,22 @@
 </p>
 <h1 align="center">Kapseli UI Framework</h1>
 
-![Code Size](https://badgen.net/badgesize/normal/Swindler36/Kapseli-UI-Framework/master/dist/js/bundle.js?style=flat-square&label=size&color=47BB77&labelColor=000)
+![Code Size](https://badgen.net/badgesize/normal/Stingy-Developer/Kapseli-UI-Framework/master/dist/js/bundle.js?style=flat-square&label=size&color=47BB77&labelColor=000)
 ![License](https://badgen.net/badge/license/MIT/blue?style=flat-square&color=47BB77&labelColor=000)
 [![NPM Version](https://img.shields.io/npm/v/@stingydev/kapseli?style=flat-square&color=47BB77&labelColor=000)](https://www.npmjs.com/package/@stingydev/kapseli)
-![Stars](https://badgen.net/github/stars/Swindler36/Kapseli-UI-Framework?style=flat-square&color=47BB77&labelColor=000)
-![Forks](https://badgen.net/github/forks/Swindler36/Kapseli-UI-Framework?style=flat-square&color=47BB77&labelColor=000)
-![Issues](https://badgen.net/github/issues/Swindler36/Kapseli-UI-Framework?style=flat-square&color=47BB77&labelColor=000)
+![Stars](https://badgen.net/github/stars/Stingy-Developer/Kapseli-UI-Framework?style=flat-square&color=47BB77&labelColor=000)
+![Forks](https://badgen.net/github/forks/Stingy-Developer/Kapseli-UI-Framework?style=flat-square&color=47BB77&labelColor=000)
+![Issues](https://badgen.net/github/issues/Stingy-Developer/Kapseli-UI-Framework?style=flat-square&color=47BB77&labelColor=000)
 
 A UI Framework for creating a SPA dashboard application.
+
+## Roadmap
+
+Plan Jamboards => [View Jamboard](https://jamboard.google.com/d/1hunm6IeiJexXnuW9XgFz2l-y8iPIZjfIvvYyiBjaRAU/edit?usp=sharing)
+
+* [ ] Fixing data-bind issues on rendering
+* [ ] Backbone for render engine
+* [ ] Firebase Implementation for storage engine
 
 ## Features
 
@@ -45,4 +53,6 @@ npm i @stingydev/kapseli
 ## Support
 
 <a href="https://www.buymeacoffee.com/stingydev" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200px"></a>
+
+
 
