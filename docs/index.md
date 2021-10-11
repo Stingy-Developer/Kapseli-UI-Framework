@@ -21,7 +21,7 @@ A flexible JS framework for building interactive SPA dashboards.
   * Form Inputs
   * Canvas 
 
-#### [Components Demo](./components.html)
+#### [Components Demo](https://swindler36.github.io/Kapseli-UI-Framework/components.html)
 
 ## Managers
 * Modal Manager
