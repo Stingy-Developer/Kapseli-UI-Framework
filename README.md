@@ -19,6 +19,7 @@ Plan Jamboards => [View Jamboard](https://jamboard.google.com/d/1hunm6IeiJexXnuW
 - [x] Fixing data-bind issues on rendering
 - [ ] Backbone for render engine
 - [ ] Firebase Implementation for storage engine
+- [ ] Create an Drag-Drop Implemetation Plugin with [interact.js](https://interactjs.io/)
 
 ## Features
 
