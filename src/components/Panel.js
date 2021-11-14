@@ -2,30 +2,32 @@ import { Component } from "./Component";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 
 class FloatPanel extends Component {
-  constructor(location = "start", cb) {
-    let id = Math.random().toString(36).substring(2, 7);
+  constructor(location = "start", id) {
     super({
       data: {
-        location: location,
+        location: "panel panel-" + location,
         title: "Panel Title",
       },
-      template: `
-            <div class="panel panel-${location}" tabindex="-1" id="${id}">
-                <div class="panel-header">
-                    <h5 class="panel-title">
-                        <data v-data="title"></data>
-                    </h5>
-                    <button type="button" class="btn-close text-reset" aria-label="Close" @click="panel_hide"></button>
-                </div>
-                <div class="panel-body small">
-                    ${cb()}
-                </div>
-            </div>
-            `,
+      template: (
+        <div bind-class="location" tabindex="-1" id={id}>
+          <div class="panel-header">
+            <h5 class="panel-title">
+              <data v-data="title"></data>
+            </h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              aria-label="Close"
+              onclick="panel_hide"
+            ></button>
+          </div>
+          <div class="panel-body small">
+            <slot></slot>
+          </div>
+        </div>
+      ),
       methods: {
-        panel_hide: () => {
-          this.$options.hide();
-        },
+        panel_hide: () => this.$options.hide(),
       },
       props: {
         title: {},
