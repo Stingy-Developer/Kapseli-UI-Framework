@@ -155,17 +155,17 @@ class VDom {
   }
 
   addComponent(tag, component) {
-    this.$components[tag] = component;
+    this.$components[tag.toUpperCase()] = component;
   }
 
   getComponent(tag) {
     return this.$components[tag];
   }
 
-  renderComponent(tag, props, children) {
+  renderComponent(tag, props, children, parentComponent = null) {
     let component = this.getComponent(tag);
     component.init(this, props, children);
-    return component.render();
+    return component.render(parentComponent);
   }
 
   getData(key_str) {
@@ -205,7 +205,7 @@ class VDom {
 
   getMethod(key_str) {
     if (this.methods) {
-      return this.methods[key_str];
+      if (this.methods[key_str]) return this.methods[key_str];
     } else {
       throw `'${key_str}' property is not defined in 'methods'!`;
     }
@@ -280,11 +280,27 @@ class VDom {
       renderedvdom = this.renderBindings(renderedvdom);
 
       this.$current_vdom = this.renderObject(renderedvdom);
-      this.app = createElement(this.$current_vdom, this);
+      this.$current_vdom["component_uuid"] = null;
+      this.$current_vdom["parent_component_uuid"] = null;
+      this.app = createElement(this.$current_vdom, this, null);
       this.el.parentElement.replaceChild(this.app, this.el);
 
       for (let i = 0; i < this.mounted.length; i++) {
-        this.mounted[i]();
+        if (!this.mounted[i]) continue;
+
+        if (typeof this.mounted[i] === "function") this.mounted[i]();
+      }
+      for (const tag in this.$components) {
+        if (Object.hasOwnProperty.call(this.$components, tag)) {
+          const component = this.$components[tag];
+          for (let i = 0; i < component.mounted.length; i++) {
+            try {
+              component.mounted[i]();
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
       }
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
@@ -300,16 +316,31 @@ class VDom {
     }
   }
 
-  renderObject(_object) {
+  renderObject(
+    _object,
+    parent_object = { component_uuid: null, parent_component_uuid: null }
+  ) {
     let obj = JSON.parse(JSON.stringify(_object));
+    if (typeof obj === "string") {
+      return obj;
+    }
+    obj["parent_component_uuid"] = parent_object["component_uuid"]
+      ? parent_object["component_uuid"]
+      : parent_object["parent_component_uuid"];
+
     if (this.$components !== undefined && obj.tag in this.$components) {
-      let comp = this.renderComponent(obj.tag, obj.props, obj.children);
-      obj = comp.vdom;
+      let comp = this.renderComponent(
+        obj.tag,
+        obj.props,
+        obj.children,
+        obj["parent_component_uuid"]
+      );
       this.methods = {
         ...this.methods,
         ...comp.methods,
       };
-      this.mounted.push(comp.mounted);
+      // This setup should be last row
+      obj = comp.vdom;
     }
 
     if (obj.props) {
@@ -336,11 +367,9 @@ class VDom {
       if (value !== "") {
         obj = String(value);
       }
-    } else if (typeof obj === "string") {
-      obj = obj;
-    } else {
+    } else if (typeof obj !== "string") {
       for (let i = 0; i < obj.children.length; i++) {
-        obj.children[i] = this.renderObject(obj.children[i]);
+        obj.children[i] = this.renderObject(obj.children[i], obj);
       }
     }
 
