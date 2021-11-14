@@ -35,7 +35,6 @@ const Kapseli = {
     this.View = new VDom(config.view ? config.view : {}, this);
 
     setEvents(this);
-
     setCommands(this);
     setProvider(this);
 
