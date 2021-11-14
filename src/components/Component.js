@@ -28,11 +28,24 @@ export class Component extends VDom {
         }
       : false;
 
-    this.mounted = config.mounted;
-    this.updated = config.updated;
+    this.mounted.push(config.mounted);
+    this.updated = [config.updated];
     this.props = config.props ? config.props : [];
     this.$props = {};
     this.$directives = {};
+    this.methods = {};
+
+    this.component_uuid = Math.random().toString(16).substring(2);
+    /*
+    if (config.methods) {
+      for (const method in config.methods) {
+        if (Object.hasOwnProperty.call(config.methods, method)) {
+          this.methods[this.component_uuid + "_" + method] =
+            config.methods[method];
+        }
+      }
+    }
+    */
     this.methods = config.methods ? config.methods : {};
     this.notListenedData = {};
     this.$components = {};
@@ -44,12 +57,12 @@ export class Component extends VDom {
       this.el = el.firstElementChild;
     } else if (typeof config.template === "object") {
       this.el = config.template;
-      //this._beautyVdom(this.el);
     }
   }
 
   init(self, props, children) {
     this.self = self;
+    this.$components = this.self.$components;
     this.renderProps(props);
     this.slots = children;
   }
@@ -143,72 +156,99 @@ export class Component extends VDom {
       renderedvdom = this.renderGenerators(this.$vdom);
       renderedvdom = this.renderBindings(renderedvdom);
 
-      this.$current_vdom = this.renderObject(renderedvdom);
+      this.$current_vdom = this.renderObject(
+        renderedvdom,
+        {
+          component_uuid: this.component_uuid,
+        },
+        true
+      );
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
-      this.$current_vdom = this.renderObject(renderedvdom);
+      this.$current_vdom = this.renderObject(
+        renderedvdom,
+        {
+          component_uuid: this.component_uuid,
+        },
+        true
+      );
     }
   }
 
-  renderObject(_object) {
+  renderObject(_object, parent_object, is_root) {
     let obj = JSON.parse(JSON.stringify(_object));
-    if (this.$components !== undefined && obj.tag in this.$components) {
-      let comp = this.renderComponent(obj.tag, obj.props, obj.children);
-      obj = comp.vdom;
-      this.methods = {
-        ...this.methods,
-        ...comp.methods,
-      };
-      this.mounted.push(comp.mounted);
-    }
 
-    if (obj.props) {
-      var arr = Object.keys(obj.props);
-      obj["$directives"] = {};
-      for (let i = 0; i < arr.length; i++) {
-        const prop = arr[i];
-        if (prop.startsWith("@")) {
-          obj["$directives"][prop] = obj.props[prop];
-        }
-      }
-
-      obj["$bindings"] = {};
-      for (let i = 0; i < arr.length; i++) {
-        const prop = arr[i];
-        if (prop.startsWith(":")) {
-          obj["$bindings"][prop] = obj.props[prop];
-        }
-      }
-    }
-
-    if (obj.tag == "DATA") {
-      let value = this.getData(obj.props["v-data"]);
-      if (value !== "") {
-        obj = String(value);
-      }
-    } else if (obj.tag == "SLOT") {
-      return this.slots;
-    } else if (typeof obj === "string") {
-      obj = obj;
+    if (typeof obj === "string") {
+      return obj;
     } else {
-      let childs = [];
-      for (let i = 0; i < obj.children.length; i++) {
-        let output = this.renderObject(obj.children[i]);
+      if (!is_root) {
+        obj["parent_component_uuid"] = parent_object["component_uuid"]
+          ? parent_object["component_uuid"]
+          : parent_object["parent_component_uuid"];
+        obj["component_uuid"] = null;
+      }
 
-        if (Array.isArray(output)) {
-          childs.push(...output);
-        } else {
-          childs.push(output);
+      if (this.$components !== undefined && obj.tag in this.$components) {
+        let comp = this.renderComponent(
+          obj.tag,
+          obj.props,
+          obj.children,
+          this.component_uuid
+        );
+        obj = comp.vdom;
+        this.methods = {
+          ...this.methods,
+          ...comp.methods,
+        };
+        return obj;
+      }
+
+      if (obj.props) {
+        var arr = Object.keys(obj.props);
+        obj["$directives"] = {};
+        for (let i = 0; i < arr.length; i++) {
+          const prop = arr[i];
+          if (prop.startsWith("@")) {
+            obj["$directives"][prop] = obj.props[prop];
+          }
+        }
+
+        obj["$bindings"] = {};
+        for (let i = 0; i < arr.length; i++) {
+          const prop = arr[i];
+          if (prop.startsWith(":")) {
+            obj["$bindings"][prop] = obj.props[prop];
+          }
         }
       }
-      obj.children = JSON.parse(JSON.stringify(childs));
+      if (obj.tag == "DATA") {
+        let value = this.getData(obj.props["v-data"]);
+        if (value !== "") {
+          obj = String(value);
+        }
+      } else if (obj.tag == "SLOT") {
+        return this.renderObject(this.slots, obj);
+      } else {
+        let childs = [];
+        if (obj.children) {
+          for (let i = 0; i < obj.children.length; i++) {
+            let output = this.renderObject(obj.children[i], obj);
+
+            if (Array.isArray(output)) {
+              childs.push(...output);
+            } else {
+              childs.push(output);
+            }
+          }
+        }
+        obj.children = JSON.parse(JSON.stringify(childs));
+      }
     }
 
     return obj;
   }
 
-  render() {
-    this.$components = this.self.$components;
+  render(parent_component_uuid = null) {
     this.renderVDom();
     if (this._data && !this.data) {
       this.data = onChange(
@@ -231,7 +271,11 @@ export class Component extends VDom {
     }
 
     return {
-      vdom: this.$current_vdom,
+      vdom: {
+        ...this.$current_vdom,
+        parent_component_uuid,
+        component_uuid: this.component_uuid,
+      },
       methods: this.methods,
       mounted: this.mounted,
       updated: this.updated,
