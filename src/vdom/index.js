@@ -1,6 +1,8 @@
 import { m, createElement, patch, className, style } from "../compiler/index";
 import { setKFor } from "../vdom/generators/k-for";
 import { setKIf } from "../vdom/generators/k-if";
+import { setKHTML } from "./generators/k-html";
+import { setKText } from "./generators/k-text";
 import onChange from "on-change";
 
 class VDom {
@@ -25,6 +27,8 @@ class VDom {
 
     setKFor(this);
     setKIf(this);
+    setKHTML(this);
+    setKText(this);
   }
 
   throwKeyError(key, key_str) {
@@ -189,14 +193,14 @@ class VDom {
             try {
               nlistdata = nlistdata[nlistarray[i]];
             } catch (error) {
-              console.log(error);
-              return "";
+              console.error(error);
+              return null;
             }
           }
           return nlistdata;
         }
       } catch (error) {
-        return "";
+        return null;
       }
     }
 
