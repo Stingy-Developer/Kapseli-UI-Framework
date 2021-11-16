@@ -1,4 +1,4 @@
-const BLACLIST = ["COMMENT"];
+const BLACLIST = ["COMMENT", "SCRIPT"];
 
 const createElement = (node, klass) => {
   if (node) {
