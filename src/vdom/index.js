@@ -167,8 +167,17 @@ class VDom {
   }
 
   renderComponent(tag, props, children, parentComponent = null) {
-    let component = this.getComponent(tag);
-    component.init(this, props, children);
+    let comp = this.getComponent(tag);
+    let component = new comp(props);
+    Object.defineProperty(component, "self", {
+      value: this,
+    });
+    Object.defineProperty(component, "$components", {
+      value: this.$components,
+    });
+    component.renderProps(props);
+    Object.defineProperty(component, "slots", { value: children });
+
     return component.render(parentComponent);
   }
 
@@ -289,22 +298,14 @@ class VDom {
       this.app = createElement(this.$current_vdom, this, null);
       this.el.parentElement.replaceChild(this.app, this.el);
 
-      for (let i = 0; i < this.mounted.length; i++) {
+      for (let i = 0; i < this.mounted.length || 0; i++) {
         if (!this.mounted[i]) continue;
 
         if (typeof this.mounted[i] === "function") this.mounted[i]();
       }
-      for (const tag in this.$components) {
-        if (Object.hasOwnProperty.call(this.$components, tag)) {
-          const component = this.$components[tag];
-          for (let i = 0; i < component.mounted.length; i++) {
-            try {
-              component.mounted[i]();
-            } catch (error) {
-              console.error(error);
-            }
-          }
-        }
+
+      for (let i = 0; i < this.updated.length; i++) {
+        this.updated[i]();
       }
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
@@ -343,7 +344,12 @@ class VDom {
         ...this.methods,
         ...comp.methods,
       };
-      // This setup should be last row
+
+      if (!this.app) {
+        this.mounted.push(comp.mounted);
+        this.updated.push(comp.updated);
+      }
+
       obj = comp.vdom;
     }
 
