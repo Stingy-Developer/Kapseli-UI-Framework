@@ -28,24 +28,15 @@ export class Component extends VDom {
         }
       : false;
 
-    this.mounted.push(config.mounted);
-    this.updated = [config.updated];
+    this.mounted = config.mounted;
+    this.updated = config.updated;
     this.props = config.props ? config.props : [];
     this.$props = {};
     this.$directives = {};
     this.methods = {};
 
     this.component_uuid = Math.random().toString(16).substring(2);
-    /*
-    if (config.methods) {
-      for (const method in config.methods) {
-        if (Object.hasOwnProperty.call(config.methods, method)) {
-          this.methods[this.component_uuid + "_" + method] =
-            config.methods[method];
-        }
-      }
-    }
-    */
+
     this.methods = config.methods ? config.methods : {};
     this.notListenedData = {};
     this.$components = {};
@@ -55,33 +46,31 @@ export class Component extends VDom {
       let el = document.createElement("div");
       el.innerHTML = config.template;
       this.el = el.firstElementChild;
-    } else if (typeof config.template === "object") {
+    } else if (
+      typeof config.template === "object" ||
+      typeof config.template === typeof []
+    ) {
       this.el = config.template;
     }
   }
 
-  init(self, props, children) {
-    this.self = self;
-    this.$components = this.self.$components;
-    this.renderProps(props);
-    this.slots = children;
-  }
-
   _beautyVdom(vdom) {
-    let newVDOM = {
-      tag: vdom.tag,
-      props: {},
-      children: [],
-    };
     if (vdom && typeof vdom !== "string") {
+      let newVDOM = {
+        tag: vdom.tag,
+        props: {},
+        children: [],
+      };
+
       newVDOM.props = this._beautyAttrForJSX(vdom.props);
 
       for (let i = 0; i < vdom.children.length; i++) {
         newVDOM.children.push(this._beautyVdom(vdom.children[i]));
       }
+      return newVDOM;
+    } else if (typeof vdom === "string") {
+      return vdom;
     }
-
-    return newVDOM;
   }
 
   getData(key_str) {
@@ -257,7 +246,7 @@ export class Component extends VDom {
           ...this.$props,
         },
         () => {
-          this.render(this.self);
+          this.render(parent_component_uuid);
           this.self.render();
         }
       );
