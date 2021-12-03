@@ -40,7 +40,7 @@ const patchChildren = (el, newNodeChildren, oldNodeChildren, klass) => {
       // Interates backwards, so in case a childNode is destroyed, it will not shift the nodes
       // and break accessing by index
       for (let i = oldNodeChildren.length - 1; i >= 0; --i) {
-        if (oldNodeChildren[i] != newNodeChildren[i]) {
+        if (oldNodeChildren[i] != newNodeChildren[i] && el !== undefined) {
           patch(
             el.childNodes[i],
             newNodeChildren[i],
@@ -57,6 +57,7 @@ const patchChildren = (el, newNodeChildren, oldNodeChildren, klass) => {
 };
 
 const patch = (el, newNode, oldNode, klass) => {
+  if (!el) return false;
   if (!newNode) {
     el.remove();
   } else {
