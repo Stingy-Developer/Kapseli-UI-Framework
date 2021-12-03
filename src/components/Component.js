@@ -35,7 +35,7 @@ export class Component extends VDom {
     this.$directives = {};
     this.methods = {};
 
-    this.component_uuid = Math.random().toString(16).substring(2);
+    this.component_uuid = "__UUID__" + Math.random().toString(16).substring(2);
 
     this.methods = config.methods ? config.methods : {};
     this.notListenedData = {};
@@ -211,7 +211,7 @@ export class Component extends VDom {
         }
       }
       if (obj.tag == "DATA") {
-        let value = this.getData(obj.props["v-data"]);
+        let value = this.getData(obj.props["k-data"]);
         if (value !== "") {
           obj = String(value);
         }
