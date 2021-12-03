@@ -37,10 +37,20 @@ const createElement = (node, klass) => {
                 },
               });
             }
+
             const direc = klass.getDirective(key);
             if (direc) {
               klass.throwKeyError(direc.render, "directive.render()");
-              direc.render(el, klass.getMethod(dir));
+              if (node["component_uuid"]) {
+                direc.render(el, klass.getMethod(node["component_uuid"])[dir]);
+              } else if (node["parent_component_uuid"]) {
+                direc.render(
+                  el,
+                  klass.getMethod(node["parent_component_uuid"])[dir]
+                );
+              } else {
+                direc.render(el, klass.getMethod(dir));
+              }
             }
           }
         }

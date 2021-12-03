@@ -16,8 +16,7 @@ class VDom {
     this.methods = config.methods ? config.methods : {};
     this.notListenedData = {};
     this.$components = {};
-    this.mounted = [];
-    this.updated = [];
+    this._component_memo = [];
 
     if (config.data) {
       this.data = onChange(config.data, () => {
@@ -177,7 +176,7 @@ class VDom {
     });
     component.renderProps(props);
     Object.defineProperty(component, "slots", { value: children });
-
+    this._component_memo.push(component);
     return component.render(parentComponent);
   }
 
@@ -298,14 +297,8 @@ class VDom {
       this.app = createElement(this.$current_vdom, this, null);
       this.el.parentElement.replaceChild(this.app, this.el);
 
-      for (let i = 0; i < this.mounted.length || 0; i++) {
-        if (!this.mounted[i]) continue;
-
-        if (typeof this.mounted[i] === "function") this.mounted[i]();
-      }
-
-      for (let i = 0; i < this.updated.length; i++) {
-        this.updated[i]();
+      for (let i = 0; i < this._component_memo.length || 0; i++) {
+        this._component_memo[i].mounted();
       }
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
@@ -315,8 +308,8 @@ class VDom {
       patch(this.app, vdom, this.$current_vdom, this);
       this.$current_vdom = vdom;
 
-      for (let i = 0; i < this.updated.length; i++) {
-        this.updated[i]();
+      for (let i = 0; i < this._component_memo.length; i++) {
+        this._component_memo[i].updated();
       }
     }
   }
@@ -340,14 +333,9 @@ class VDom {
         obj.children,
         obj["parent_component_uuid"]
       );
-      this.methods = {
-        ...this.methods,
-        ...comp.methods,
-      };
 
       if (!this.app) {
-        this.mounted.push(comp.mounted);
-        this.updated.push(comp.updated);
+        this.methods[comp.vdom.component_uuid] = comp.methods;
       }
 
       obj = comp.vdom;
