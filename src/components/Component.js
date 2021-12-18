@@ -112,20 +112,22 @@ export class Component extends VDom {
   }
 
   renderProps(props) {
-    for (const key in props) {
-      if (Object.hasOwnProperty.call(props, key)) {
-        let prop_val = props[key];
-        if (key in this.props) {
-          var temp_val = this.self.getData(prop_val);
-          if (temp_val) {
-            prop_val = temp_val;
-          } else if ("edit" in this.props[key]) {
-            prop_val = this.props[key].edit(prop_val);
+    try {
+      if (this.el instanceof HTMLElement) {
+        for (const key in props) {
+          if (Object.hasOwnProperty.call(props, key)) {
+            const prop_value = props[key];
+            this.el.setAttribute(key, prop_value);
           }
-
-          this.notListenedData[key] = prop_val;
         }
+      } else {
+        this.el.props = {
+          ...this.el.props,
+          ...props,
+        };
       }
+    } catch (error) {
+      console.error(error);
     }
   }
 
