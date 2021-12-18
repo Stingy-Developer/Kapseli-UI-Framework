@@ -8,6 +8,7 @@ import { Plugin } from "../plugin/index";
 import { Route } from "../route/index";
 import { VDom } from "../vdom";
 //import * as Vue from "vue";
+import { Component } from "../components/Component";
 
 // configs
 import { setCommands } from "./configs/command";
@@ -126,6 +127,7 @@ const Kapseli = {
     this.Event.run("app:locale", l);
     this.render();
   },
+  Component,
 };
 
 export { Kapseli };
