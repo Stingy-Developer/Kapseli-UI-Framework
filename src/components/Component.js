@@ -12,6 +12,7 @@ export class Component extends VDom {
       fetchMethod: false,
       mounted: () => {},
       updated: () => {},
+      inheritances: [],
       ...conf,
     };
 
@@ -41,6 +42,7 @@ export class Component extends VDom {
     this.notListenedData = {};
     this.$components = {};
     this._data = config.data || {};
+    this.inheritance = config.inheritances;
 
     if (typeof config.template === "string") {
       let el = document.createElement("div");
@@ -218,7 +220,7 @@ export class Component extends VDom {
           obj = String(value);
         }
       } else if (obj.tag == "SLOT") {
-        return this.renderObject(this.slots, obj);
+        return this.renderObject(this.initIntheritance(this.slots), obj);
       } else {
         let childs = [];
         if (obj.children) {
@@ -271,5 +273,21 @@ export class Component extends VDom {
       mounted: this.mounted,
       updated: this.updated,
     };
+  }
+
+  initIntheritance(slots) {
+    let slotVDom = Array.isArray(slots) ? slots : [slots];
+    if (this.inheritance) {
+      for (let i = this.inheritance.length - 1; i > -1; i--) {
+        // This part will change after adding base inheritance class
+        let vdom = new this.inheritance[i]();
+        slotVDom = {
+          ...vdom,
+          children: Array.isArray(slotVDom) ? slotVDom : [slotVDom],
+        };
+      }
+    }
+
+    return slotVDom;
   }
 }
