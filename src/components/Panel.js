@@ -2,17 +2,17 @@ import { Component } from "./Component";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 
 class FloatPanel extends Component {
-  constructor(location = "start", id) {
+  constructor({ location = "start", id, title }) {
     super({
       data: {
         location: "panel panel-" + location,
-        title: "Panel Title",
+        title,
       },
       template: (
         <div bind-class="location" tabindex="-1" id={id}>
           <div class="panel-header">
             <h5 class="panel-title">
-              <data v-data="title"></data>
+              <data k-data="title"></data>
             </h5>
             <button
               type="button"
@@ -27,12 +27,14 @@ class FloatPanel extends Component {
         </div>
       ),
       methods: {
-        panel_hide: () => this.$options.hide(),
+        panel_hide: (e) => {
+          this.$options.hide();
+        },
+        panel_show: () => {
+          this.$options.show();
+        },
       },
-      props: {
-        title: {},
-      },
-      mounted: () => {
+      mounted() {
         this.$options = new Offcanvas(document.getElementById(id));
       },
     });
