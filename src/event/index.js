@@ -12,15 +12,17 @@ export class Event {
       this.event[name].forEach(function (e) {
         e(args);
       });
+      return true;
     } else {
-      console.error(`EventError: '${name}' Event is not found!`);
+      console.log(`EventError: '${name}' Event is not found!`);
+      return false;
     }
   }
   on(name, cb) {
     if (name in this.event) {
       this.event[name].push(cb);
     } else {
-      console.error(`EventError: '${name}' Event is not found!`);
+      console.log(`EventError: '${name}' Event is not found!`);
     }
   }
   get(name) {
@@ -38,8 +40,10 @@ export class Event {
   remove(name) {
     if (name in this.event) {
       delete this.event[name];
+      return true;
     } else {
-      console.error(`EventError: '${name}' Event is not found!`);
+      console.log(`EventError: '${name}' Event is not found!`);
+      return false;
     }
   }
 }
