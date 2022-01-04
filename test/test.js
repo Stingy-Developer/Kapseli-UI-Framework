@@ -1,32 +1,50 @@
 import { className } from "../src/compiler/index";
-  test('#className()', () => {
-    expect(className(
-        {
-            "a": true
-        }
-    )).toBe("a");
+import kp from "../src/index";
 
-    expect(className(
-        {
-            "a": true,
-            "b": true,
-            "c": false
-        }
-    )).toBe("a b");
+test("#app_init", () => {
+  expect(
+    kp.init({
+      view: { el: "#app" },
+    })
+  ).toBeDefined();
+});
 
-    expect(className(
-        {
-            "a": false,
-            "b": true,
-            "c": true
-        }
-    )).toBe("b c");
-
-    expect(className(
-        {
-            "a": true,
-            "b": true
-        }
-    )).toBe("a b");
+test("#event_run", () => {
+  let app = kp.init({
+    view: { el: "#app" },
   });
 
+  expect(app.Event.run("app:init")).toBe(true);
+  expect(app.Event.run("abc")).toBe(false);
+});
+
+test("#className()", () => {
+  expect(
+    className({
+      a: true,
+    })
+  ).toBe("a");
+
+  expect(
+    className({
+      a: true,
+      b: true,
+      c: false,
+    })
+  ).toBe("a b");
+
+  expect(
+    className({
+      a: false,
+      b: true,
+      c: true,
+    })
+  ).toBe("b c");
+
+  expect(
+    className({
+      a: true,
+      b: true,
+    })
+  ).toBe("a b");
+});
