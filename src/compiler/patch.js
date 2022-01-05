@@ -8,7 +8,7 @@ const replaceWith = (el, vnode, klass) => {
 
 const patchProps = (el, newProps, oldProps) => {
   if (el !== undefined) {
-    if (el.nodeType != 8) {
+    if (el.nodeType != 8 && oldProps !== undefined) {
       const skip = new Set();
 
       for (const oldPropName of Object.keys(oldProps)) {
@@ -49,9 +49,14 @@ const patchChildren = (el, newNodeChildren, oldNodeChildren, klass) => {
           );
         }
       }
-    }
-    for (let i = oldNodeChildren.length ?? 0; i < newNodeChildren.length; ++i) {
-      el.appendChild(createElement(newNodeChildren[i], klass));
+
+      for (
+        let i = oldNodeChildren.length ?? 0;
+        i < newNodeChildren.length;
+        ++i
+      ) {
+        el.appendChild(createElement(newNodeChildren[i], klass));
+      }
     }
   }
 };
