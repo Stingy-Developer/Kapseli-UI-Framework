@@ -3,6 +3,8 @@ import { setKFor } from "../vdom/generators/k-for";
 import { setKIf } from "../vdom/generators/k-if";
 import { setKHTML } from "./generators/k-html";
 import { setKText } from "./generators/k-text";
+import { setKModel } from "./generators/k-model";
+
 import onChange from "on-change";
 
 class VDom {
@@ -16,7 +18,7 @@ class VDom {
     this.methods = config.methods ? config.methods : {};
     this.notListenedData = {};
     this.$components = {};
-    this._component_memo = [];
+    this._component_memo = {};
 
     if (config.data) {
       this.data = onChange(config.data, () => {
@@ -28,6 +30,7 @@ class VDom {
     setKIf(this);
     setKHTML(this);
     setKText(this);
+    setKModel(this);
   }
 
   throwKeyError(key, key_str) {
@@ -171,13 +174,36 @@ class VDom {
     Object.defineProperty(component, "self", {
       value: this,
     });
+    Object.defineProperty(component, "klass", {
+      value: this.klass,
+    });
     Object.defineProperty(component, "$components", {
       value: this.$components,
     });
     component.renderProps(props);
     Object.defineProperty(component, "slots", { value: children });
-    this._component_memo.push(component);
+    if (component.use_memo)
+      this._component_memo[component.use_memo] = component;
     return component.render(parentComponent);
+  }
+
+  _get_data(key_str, ...datas) {
+    let first_data = datas[0];
+
+    let data_array = key_str.split(".");
+
+    for (let i = 0; i < data_array.length; i++) {
+      try {
+        first_data = first_data[data_array[i]];
+
+        if (first_data === undefined && datas.length > 1) {
+          return this._get_data(key_str, ...datas.splice(1));
+        }
+      } catch (error) {
+        return false;
+      }
+    }
+    return first_data;
   }
 
   getData(key_str) {
@@ -187,32 +213,8 @@ class VDom {
     if (key_str !== undefined && key_str.startsWith("t:")) {
       return this.klass.I18n.t(key_str.substring(2));
     }
-    let array = key_str.split(".");
 
-    for (let i = 0; i < array.length; i++) {
-      try {
-        data = data[array[i]];
-
-        if (data === undefined) {
-          let nlistdata = this.notListenedData;
-          let nlistarray = key_str.split(".");
-
-          for (let i = 0; i < nlistarray.length; i++) {
-            try {
-              nlistdata = nlistdata[nlistarray[i]];
-            } catch (error) {
-              console.error(error);
-              return null;
-            }
-          }
-          return nlistdata;
-        }
-      } catch (error) {
-        return null;
-      }
-    }
-
-    return data;
+    return this._get_data(key_str, data, this.notListenedData);
   }
 
   getMethod(key_str) {
@@ -290,15 +292,16 @@ class VDom {
       }
       renderedvdom = this.renderGenerators(this.$vdom);
       renderedvdom = this.renderBindings(renderedvdom);
-
       this.$current_vdom = this.renderObject(renderedvdom);
       this.$current_vdom["component_uuid"] = null;
       this.$current_vdom["parent_component_uuid"] = null;
       this.app = createElement(this.$current_vdom, this, null);
       this.el.parentElement.replaceChild(this.app, this.el);
 
-      for (let i = 0; i < this._component_memo.length || 0; i++) {
-        this._component_memo[i].mounted();
+      for (const id in this._component_memo) {
+        if (Object.hasOwnProperty.call(this._component_memo, id)) {
+          this._component_memo[id].mounted();
+        }
       }
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
@@ -308,8 +311,10 @@ class VDom {
       patch(this.app, vdom, this.$current_vdom, this);
       this.$current_vdom = vdom;
 
-      for (let i = 0; i < this._component_memo.length; i++) {
-        this._component_memo[i].updated();
+      for (const id in this._component_memo) {
+        if (Object.hasOwnProperty.call(this._component_memo, id)) {
+          this._component_memo[id].updated();
+        }
       }
     }
   }
@@ -343,6 +348,7 @@ class VDom {
 
     if (obj.props) {
       var arr = Object.keys(obj.props);
+
       obj["$directives"] = {};
       for (let i = 0; i < arr.length; i++) {
         const prop = arr[i];
