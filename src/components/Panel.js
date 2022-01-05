@@ -4,6 +4,7 @@ import Offcanvas from "bootstrap/js/dist/offcanvas";
 class FloatPanel extends Component {
   constructor({ location = "start", id, title }) {
     super({
+      use_memo: id,
       data: {
         location: "panel panel-" + location,
         title,
