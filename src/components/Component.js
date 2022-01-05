@@ -13,6 +13,7 @@ export class Component extends VDom {
       mounted: () => {},
       updated: () => {},
       inheritances: [],
+      use_memo: false,
       ...conf,
     };
 
@@ -43,6 +44,7 @@ export class Component extends VDom {
     this.$components = {};
     this._data = config.data || {};
     this.inheritance = config.inheritances;
+    this.use_memo = config.use_memo;
 
     if (typeof config.template === "string") {
       let el = document.createElement("div");
@@ -86,31 +88,12 @@ export class Component extends VDom {
       return this.klass.I18n.t(key_str.substring(2));
     }
 
-    let array = key_str.split(".");
-
-    for (let i = 0; i < array.length; i++) {
-      try {
-        data = data[array[i]];
-
-        if (data === undefined) {
-          let nlistdata = this.notListenedData;
-          let nlistarray = key_str.split(".");
-
-          for (let i = 0; i < nlistarray.length; i++) {
-            try {
-              nlistdata = nlistdata[nlistarray[i]];
-            } catch (error) {
-              return false;
-            }
-          }
-          return nlistdata;
-        }
-      } catch (error) {
-        return false;
-      }
-    }
-
-    return data;
+    return this._get_data(
+      key_str,
+      data,
+      this.notListenedData,
+      this.klass.View.data
+    );
   }
 
   renderProps(props) {
