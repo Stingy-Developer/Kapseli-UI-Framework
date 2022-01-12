@@ -235,7 +235,6 @@ class VDom {
 
   renderGenerators(_vdom) {
     let vdom = JSON.parse(JSON.stringify(_vdom));
-    this.throwKeyError(_vdom, "vdom");
     if (vdom && typeof vdom !== "string") {
       let props = Object.keys(vdom.props);
 

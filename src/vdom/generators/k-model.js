@@ -15,13 +15,18 @@ export function setKModel(obj) {
 
       default:
         vdom.props["@input"] = "k_model_input_value";
-        vdom.props["value"] = data;
+        if (vdom.tag === "TEXTAREA") {
+          vdom.children = [String(data)];
+        } else {
+          vdom.props["value"] = data;
+        }
+
         break;
     }
 
     vdom.component_uuid = "__GLOBAL__";
 
-    self.methods["__GLOBAL__"] = {
+    self.methods[vdom.component_uuid] = {
       k_model_input_value(e) {
         self.data[expression] = e.target.value;
       },
