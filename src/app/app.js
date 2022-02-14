@@ -15,6 +15,7 @@ import { setCommands } from "./configs/command";
 import { setEvents } from "./configs/event";
 import { defaultConfig } from "./configs/default";
 import { setProvider } from "./configs/provider";
+import { command2method } from "./configs/command2method";
 
 const Kapseli = {
   plugins: new Plugin(),
@@ -33,10 +34,21 @@ const Kapseli = {
     );
     this.Command = new Command(config.command ? config.command : {}, this);
     this.Route = new Route(config.route ? config.route : {}, this);
-    this.View = new VDom(config.view ? config.view : {}, this);
-
     setEvents(this);
     setCommands(this);
+    this.View = new VDom(
+      config.view
+        ? {
+            ...config.view,
+            methods: {
+              ...config.view.methods,
+              ...command2method(this.Command),
+            },
+          }
+        : {},
+      this
+    );
+
     setProvider(this);
 
     if (config.plugins) {
