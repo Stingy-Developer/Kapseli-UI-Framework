@@ -15,11 +15,13 @@
     "@babel/cli": "^7.14.8",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/runtime": "^7.14.6",
+    "acorn-import-assertions": "^1.8.0",
     "ajaxable": "^0.2.3",
     "backbone": "^1.4.0",
     "bootstrap": "^5.1.0",
     "core-js": "^3.16.2",
-    "on-change": "^3.0.2"
+    "on-change": "^3.0.2",
+    "source-list-map": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
