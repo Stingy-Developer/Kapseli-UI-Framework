@@ -35,4 +35,12 @@ export function setCommands(self) {
       self.View._component_memo[p].$options.toggle();
     });
   });
+
+  self.Command.add(`route:prev`, function () {
+    self.Route.prev(p);
+  });
+
+  self.Command.add(`route:next`, function () {
+    self.Route.next(p);
+  });
 }
