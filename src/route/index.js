@@ -2,10 +2,10 @@ const { routeConfig } = require("./config");
 
 class Route {
   constructor(config, self) {
+    this.klass = self !== undefined ? self : {};
+    this.event = self !== undefined ? self.Event : {};
     this.config = config || {};
-    this.routeConfig = config.route
-      ? { ...routeConfig, ...config.route }
-      : routeConfig;
+    this.routeConfig = config ? { ...routeConfig, ...config } : routeConfig;
   }
   addRoute(route, view) {
     this.routeConfig.routes[route] = view;
@@ -17,21 +17,21 @@ class Route {
     }
   }
   hasRoute(route) {
-    return route in this.routeConfig.routes ? true : false;
+    return route in this.routeConfig ? true : false;
   }
   prev() {
     history.back();
-    this.config.event.run("route:prev", location.pathname);
+    this.event.run("route:prev", location.pathname);
   }
   next() {
     history.forward();
-    this.config.event.run("route:next", location.pathname);
+    this.event.run("route:next", location.pathname);
   }
   getAll() {
     this.routeConfig.routes;
   }
   listen() {
-    this.config.event.on("route:open", function (route) {
+    this.event.on("route:open", function (route) {
       if (this.hasRoute(route)) {
         this.__open(route);
       } else {
