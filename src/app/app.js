@@ -1,9 +1,7 @@
 import { StorageManager } from "../storage/index";
 import { Command } from "../command/index";
 import { I18n } from "../i18n/index";
-import { Data } from "../data/index";
 import { Event } from "../event/index";
-import { Panel } from "../panel/index";
 import { Plugin } from "../plugin/index";
 import { Route } from "../route/index";
 import { VDom } from "../vdom";
@@ -94,11 +92,13 @@ const Kapseli = {
 
     // router init
     var routers = [].slice.call(document.querySelectorAll("[data-route]"));
-    routers.map(function (router) {
-      if (router && router.attributes) {
-        if (!this.Route.hasRoute(router.attributes["data-route"])) {
+    routers.forEach((router) => {
+      if (router) {
+        if (!this.Route.hasRoute(router.getAttribute("data-route"))) {
           console.error(
-            `RouterError: '${router.attributes["data-route"]}' route is not registered!`
+            `RouterError: '${router.getAttribute(
+              "data-route"
+            )}' route is not registered!`
           );
         }
       }
