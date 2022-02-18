@@ -26,7 +26,5 @@ window.jsx = (tag, props, ...children) => {
 import { Kapseli } from "./app/app";
 
 export default {
-  init(cfg) {
-    return Kapseli.init(cfg);
-  },
+  ...Kapseli,
 };
