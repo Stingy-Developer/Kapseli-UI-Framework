@@ -43,36 +43,30 @@ class FloatPanel extends Component {
 }
 
 class StaticPanel extends Component {
-  constructor(location = "start", uri, body_cb, footer_cb) {
+  constructor({ location = "start", title, id, uri }) {
     super({
+      use_memo: id,
       data: {
-        location: location,
-        title: "Panel Title",
-        is_footer: typeof footer_cb === "function",
-        is_body: typeof body_cb === "function",
+        location: "static-panel static-panel-" + location,
+        title,
       },
-      template: `
-            <div class="static-panel static-panel-${location}">
-                <a class="static-panel-header" href="${uri}">
-                    <img src="https://avatars.githubusercontent.com/u/59289764?s=60&v=4" alt="">
-                    <span class="static-panel-title">
-                        <data v-data="title"></data>
-                    </span>
-                </a>
-                <hr>
-                <div v-if="is_body">
-                ${typeof body_cb === "function" ? body_cb() : ""}
-                </div>
-                <div class="static-panel-footer" v-if="is_footer">
-                    <hr>
-                    ${typeof footer_cb === "function" ? footer_cb() : ""}
-                </div>
-            </div>
-            `,
-      methods: {},
-      props: {
-        title: {},
-      },
+      template: (
+        <div bind-class="location">
+          <a class="static-panel-header" href={uri}>
+            <img
+              src="https://avatars.githubusercontent.com/u/59289764?s=60&v=4"
+              alt=""
+            />
+            <span class="static-panel-title">
+              <data v-data="title"></data>
+            </span>
+          </a>
+          <hr />
+          <div>
+            <slot />
+          </div>
+        </div>
+      ),
     });
   }
 }
