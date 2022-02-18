@@ -27,6 +27,7 @@ export function setKModel(obj) {
     vdom.component_uuid = "__GLOBAL__";
 
     self.methods[vdom.component_uuid] = {
+      ...self.methods[vdom.component_uuid],
       k_model_input_value(e) {
         self.data[expression] = e.target.value;
       },

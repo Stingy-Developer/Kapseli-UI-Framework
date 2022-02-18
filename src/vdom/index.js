@@ -15,7 +15,9 @@ class VDom {
     this.$directives = {};
     this.$generators = {};
     this.el = config.el ? this.getEl(config.el) : false;
-    this.methods = config.methods ? config.methods : {};
+    this.methods = {
+      __GLOBAL__: config.methods ? config.methods : {},
+    };
     this.notListenedData = {};
     this.$components = {};
     this._component_memo = {};
@@ -182,7 +184,10 @@ class VDom {
     });
     component.renderProps(props);
     Object.defineProperty(component, "slots", { value: children });
-    if (component.use_memo)
+    if (
+      component.use_memo &&
+      this._component_memo[component.use_memo] === undefined
+    )
       this._component_memo[component.use_memo] = component;
     return component.render(parentComponent);
   }

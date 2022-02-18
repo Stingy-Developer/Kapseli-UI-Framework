@@ -41,15 +41,25 @@ const createElement = (node, klass) => {
             const direc = klass.getDirective(key);
             if (direc) {
               klass.throwKeyError(direc.render, "directive.render()");
+
               if (node["component_uuid"]) {
-                direc.render(el, klass.getMethod(node["component_uuid"])[dir]);
-              } else if (node["parent_component_uuid"]) {
+                let method = klass.getMethod(node["component_uuid"])[dir];
+
                 direc.render(
                   el,
-                  klass.getMethod(node["parent_component_uuid"])[dir]
+                  method ? method : klass.getMethod("__GLOBAL__")[dir]
+                );
+              } else if (node["parent_component_uuid"]) {
+                let method = klass.getMethod(node["parent_component_uuid"])[
+                  dir
+                ];
+
+                direc.render(
+                  el,
+                  method ? method : klass.getMethod("__GLOBAL__")[dir]
                 );
               } else {
-                direc.render(el, klass.getMethod(dir));
+                direc.render(el, klass.getMethod("__GLOBAL__")[dir]);
               }
             }
           }
