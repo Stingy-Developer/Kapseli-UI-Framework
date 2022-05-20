@@ -1,4 +1,6 @@
-export const command2method = (Command) => {
+import { Command } from "../../command/index";
+
+export const command2method = (Command: Command) => {
   let COMMANDS = {};
 
   let all_commands = Command.getAll();

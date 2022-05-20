@@ -3,9 +3,8 @@ import { Command } from "../command/index";
 import { I18n } from "../i18n/index";
 import { Event } from "../event/index";
 import { Plugin } from "../plugin/index";
-import { Route } from "../route/index";
-import { VDom } from "../vdom";
-//import * as Vue from "vue";
+// import { Route } from "../route/index";
+import { VDom } from "../vdom/index";
 import { Component } from "../components/Component";
 
 // configs
@@ -14,9 +13,16 @@ import { setEvents } from "./configs/event";
 import { defaultConfig } from "./configs/default";
 import { setProvider } from "./configs/provider";
 import { command2method } from "./configs/command2method";
+import { KapseliProp } from "../types/Kapseli";
 
-const Kapseli = {
+export const Kapseli: KapseliProp = {
   plugins: new Plugin(),
+  Event: null,
+  I18n: null,
+  Storage: null,
+  Command: null,
+  Route: null,
+  View: null,
   init(configs) {
     let config = configs
       ? {
@@ -31,9 +37,10 @@ const Kapseli = {
       this
     );
     this.Command = new Command(config.command ? config.command : {}, this);
-    this.Route = new Route(config.route ? config.route : {}, this);
+    // this.Route = new Route(config.route ? config.route : {}, this);
     setEvents(this);
     setCommands(this);
+
     this.View = new VDom(
       config.view
         ? {
@@ -53,7 +60,7 @@ const Kapseli = {
       let plgs = config.plugins;
       for (let i = 0; i < plgs.length; i++) {
         if (plgs[i] in this.plugins.plugins) {
-          if (config.version === "production") {
+          if (config.version !== "production") {
             try {
               this.plugins.plugins[plgs[i]](
                 this,
@@ -91,18 +98,18 @@ const Kapseli = {
     this.View.render();
 
     // router init
-    var routers = [].slice.call(document.querySelectorAll("[data-route]"));
-    routers.forEach((router) => {
-      if (router) {
-        if (!this.Route.hasRoute(router.getAttribute("data-route"))) {
-          console.error(
-            `RouterError: '${router.getAttribute(
-              "data-route"
-            )}' route is not registered!`
-          );
-        }
-      }
-    });
+    // var routers = [].slice.call(document.querySelectorAll("[data-route]"));
+    // routers.forEach((router) => {
+    //   if (router) {
+    //     if (!this.Route.hasRoute(router.getAttribute("data-route"))) {
+    //       console.error(
+    //         `RouterError: '${router.getAttribute(
+    //           "data-route"
+    //         )}' route is not registered!`
+    //       );
+    //     }
+    //   }
+    // });
   },
 
   refresh(configs) {
@@ -139,7 +146,5 @@ const Kapseli = {
     this.Event.run("app:locale", l);
     this.render();
   },
-  Component,
+  Component: Component,
 };
-
-export { Kapseli };
