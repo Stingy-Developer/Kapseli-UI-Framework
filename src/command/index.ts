@@ -1,5 +1,23 @@
-class Command {
-  constructor(config, self) {
+import { KapseliProp } from "../types/Kapseli";
+
+interface CommandProp {
+  run: (args: any) => void;
+  stop?: (args: any) => void;
+}
+
+interface CommandConfigProp {
+  [key: string]: CommandProp;
+}
+
+export class Command {
+  config: any;
+  commands: CommandConfigProp;
+  states: {
+    [key: string]: boolean;
+  };
+  event: any;
+
+  constructor(config: CommandConfigProp, self: KapseliProp) {
     this.config = config;
     this.commands = {};
     this.states = {};
@@ -11,22 +29,19 @@ class Command {
       }
     }
   }
-  add(command, config) {
+  add(command: string, config: CommandProp) {
     if (!this.has(command)) {
       this.commands[command] = {
-        run: typeof config === "function" ? config : config.run,
-        stop:
-          typeof config === "object" && config.stop !== undefined
-            ? config.stop
-            : () => {},
+        run: config.run,
+        stop: config.stop !== undefined ? config.stop : () => {},
       };
       this.states[command] = false;
     }
   }
-  has(command) {
+  has(command: string) {
     return command in this.commands ? true : false;
   }
-  get(command) {
+  get(command: string) {
     if (this.has(command)) {
       return this.commands[command];
     }
@@ -35,7 +50,7 @@ class Command {
   getAll() {
     return this.commands;
   }
-  run(command, args) {
+  run(command: string, args: any) {
     if (this.has(command)) {
       this.states[command] = true;
       this.event.run(`run`, args);
@@ -49,7 +64,7 @@ class Command {
     }
     return false;
   }
-  stop(command, args) {
+  stop(command: string, args: any) {
     if (this.has(command)) {
       if ("stop" in this.commands[command]) {
         this.event.run(`stop`, args);
@@ -61,7 +76,7 @@ class Command {
     }
     return false;
   }
-  isActive(command) {
+  isActive(command: string) {
     if (this.has(command)) {
       return this.states[command];
     }
@@ -80,5 +95,3 @@ class Command {
     return actives;
   }
 }
-
-export { Command };
