@@ -1,6 +1,8 @@
 /node_modules
-tsconfig.json
 /test/template
 /index.html
 /components.html
 /test.html
+/src/route/
+/src/form/
+/src/panel/
