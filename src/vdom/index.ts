@@ -1,16 +1,43 @@
 import { m, createElement, patch, className, style } from "../compiler/index";
-import { setKFor } from "../vdom/generators/k-for";
-import { setKIf } from "../vdom/generators/k-if";
+import { setKFor } from "./generators/k-for";
+import { setKIf } from "./generators/k-if";
 import { setKHTML } from "./generators/k-html";
 import { setKText } from "./generators/k-text";
 import { setKModel } from "./generators/k-model";
 
 import onChange from "on-change";
+import { KapseliProp } from "../types/Kapseli";
+import { Event } from "../event";
+import {
+  KapseliComponentObj,
+  KapseliDirective,
+  KapseliDirectiveObj,
+  KapseliGeneretorFunc,
+  KapseliGeneretorObj,
+  KapseliMethods,
+} from "../types/View";
+import { KapseliNodeProp, KapseliNodePropsProp } from "../types/KapseliNode";
+import { Component } from "../components/Component";
 
 class VDom {
-  constructor(conf, self) {
-    this.klass = self !== undefined ? self : {};
-    this.event = self !== undefined ? self.Event : {};
+  klass: KapseliProp;
+  event: Event | false;
+  $directives: KapseliDirective;
+  $generators: KapseliGeneretorObj;
+  el: Element | KapseliNodeProp | false;
+  app: Element | Comment | false;
+  methods: KapseliMethods;
+  notListenedData: any;
+  $components: KapseliComponentObj;
+  _component_memo: KapseliComponentObj;
+  data: any;
+  $vdom: string | KapseliNodeProp;
+  $current_vdom: any;
+  component: (tag: string, component: any) => void;
+
+  constructor(conf: any, self?: KapseliProp) {
+    this.klass = self;
+    this.event = self ? self.Event : false;
     let config = conf ? conf : false;
     this.$directives = {};
     this.$generators = {};
@@ -22,6 +49,8 @@ class VDom {
     this.$components = {};
     this._component_memo = {};
 
+    this.data = false;
+
     if (config.data) {
       this.data = onChange(config.data, () => {
         this.render();
@@ -32,24 +61,24 @@ class VDom {
     setKIf(this);
     setKHTML(this);
     setKText(this);
-    setKModel(this);
+    // setKModel(this);
   }
 
-  throwKeyError(key, key_str) {
+  throwKeyError(key: any, key_str: string) {
     if (!key) throw `'${key_str}' property is not defined!`;
   }
 
-  getEl(selector) {
+  getEl(selector: string) {
     let el = document.querySelector(selector);
 
     if (el) {
       return el;
     } else {
-      return false;
+      throw new Error("Selector is unvalid!");
     }
   }
 
-  __attr_class(classname) {
+  __attr_class(classname: string) {
     let classes = {};
     var d = classname.split(" ");
     for (let i = 0; i < d.length; i++) {
@@ -58,7 +87,7 @@ class VDom {
     return classes;
   }
 
-  __attr_style(style) {
+  __attr_style(style: string) {
     let styles = {};
     var d = style.split(";");
     for (let i = 0; i < d.length; i++) {
@@ -67,7 +96,7 @@ class VDom {
     return styles;
   }
 
-  _beautyAttr(attr) {
+  _beautyAttr(attr: NamedNodeMap) {
     var attrs = {};
     attrs["class"] = {};
 
@@ -100,7 +129,7 @@ class VDom {
     return attrs;
   }
 
-  _beautyAttrForJSX(attr) {
+  _beautyAttrForJSX(attr: { [key: string]: string }) {
     var attrs = {};
     attrs["class"] = {};
 
@@ -135,43 +164,50 @@ class VDom {
     return attrs;
   }
 
-  h(tag, props, children) {
-    return { tag, props, children };
-  }
-  _getVdom(el) {
+  h = m;
+
+  _getVdom(el: Element | Node) {
     let childs = [];
-    if (el && el.nodeName != "#text") {
-      if (el.childNodes !== undefined) {
-        for (let i = 0; i < el.childNodes.length; i++) {
-          var element = this._getVdom(el.childNodes[i]);
-          childs.push(element);
+    if (el) {
+      if (el instanceof Element) {
+        if (el.childNodes !== undefined) {
+          for (let i = 0; i < el.childNodes.length; i++) {
+            var element = this._getVdom(el.childNodes[i]);
+            childs.push(element);
+          }
         }
-      }
 
-      return this.h(el.tagName, this._beautyAttr(el.attributes), childs);
-    } else {
-      return el.data;
-    }
+        return this.h(el.tagName, this._beautyAttr(el.attributes), childs, {});
+      } else {
+        return el.textContent;
+      }
+    } else this.throwKeyError;
   }
 
-  addDirective(id, obj) {
+  addDirective(id: string, obj: KapseliDirectiveObj) {
     this.$directives[id] = obj;
   }
 
-  getDirective(id) {
+  getDirective(id: string) {
     return this.$directives[id] ? this.$directives[id] : false;
   }
 
-  addComponent(tag, component) {
+  addComponent(tag: string, component: any) {
     this.$components[tag.toUpperCase()] = component;
   }
 
-  getComponent(tag) {
+  getComponent(tag: string) {
     return this.$components[tag];
   }
 
-  renderComponent(tag, props, children, parentComponent = null) {
+  renderComponent(
+    tag: string,
+    props: KapseliNodePropsProp,
+    children: KapseliNodeProp[] | string,
+    parentComponent: any = null
+  ) {
     let comp = this.getComponent(tag);
+
     let component = new comp(props);
     Object.defineProperty(component, "self", {
       value: this,
@@ -184,15 +220,16 @@ class VDom {
     });
     component.renderProps(props);
     Object.defineProperty(component, "slots", { value: children });
+
     if (
-      component.use_memo &&
-      this._component_memo[component.use_memo] === undefined
+      component.useMemo &&
+      this._component_memo[component.useMemo] === undefined
     )
-      this._component_memo[component.use_memo] = component;
+      this._component_memo[component.useMemo] = component;
     return component.render(parentComponent);
   }
 
-  _get_data(key_str, ...datas) {
+  _get_data(key_str: string, ...datas: string[]) {
     let first_data = datas[0];
 
     let data_array = key_str.split(".");
@@ -211,7 +248,7 @@ class VDom {
     return first_data;
   }
 
-  getData(key_str) {
+  getData(key_str: string) {
     let data = this.data;
 
     // data will translate
@@ -222,7 +259,7 @@ class VDom {
     return this._get_data(key_str, data, this.notListenedData);
   }
 
-  getMethod(key_str) {
+  getMethod(key_str: string) {
     if (this.methods) {
       if (this.methods[key_str]) return this.methods[key_str];
     } else {
@@ -230,16 +267,16 @@ class VDom {
     }
   }
 
-  addGenerator(key, cb) {
-    this.$generators[key] = cb; //cb(expression,vdom,this)
+  addGenerator(key: string, cb: KapseliGeneretorFunc) {
+    this.$generators[key] = cb;
   }
 
-  getGenerator(key) {
+  getGenerator(key: string) {
     return this.$generators[key] ? this.$generators[key] : false;
   }
 
-  renderGenerators(_vdom) {
-    let vdom = JSON.parse(JSON.stringify(_vdom));
+  renderGenerators(_vdom: KapseliNodeProp | string) {
+    let vdom: KapseliNodeProp = JSON.parse(JSON.stringify(_vdom));
     if (vdom && typeof vdom !== "string") {
       let props = Object.keys(vdom.props);
 
@@ -259,7 +296,7 @@ class VDom {
     return vdom;
   }
 
-  renderBindings(_vdom, shortcut = "bind-") {
+  renderBindings(_vdom: KapseliNodeProp, shortcut: string = "bind-") {
     let vdom = JSON.parse(JSON.stringify(_vdom));
     if (vdom && typeof vdom !== "string") {
       let props = Object.keys(vdom.props);
@@ -287,20 +324,21 @@ class VDom {
   }
 
   renderVDom() {
-    let renderedvdom = false;
+    let renderedvdom = null;
     if (!this.app) {
-      try {
-        if (this.el instanceof HTMLElement) this.$vdom = this._getVdom(this.el);
-      } catch (error) {
-        this.$vdom = this.el;
+      if (this.el instanceof Element) this.$vdom = this._getVdom(this.el);
+      else if (this.el) this.$vdom = this.el;
+
+      if (this.$vdom && this.el) {
+        renderedvdom = this.renderGenerators(this.$vdom);
+        renderedvdom = this.renderBindings(renderedvdom);
+        this.$current_vdom = this.renderObject(renderedvdom);
+        this.$current_vdom["component_uuid"] = null;
+        this.$current_vdom["parent_component_uuid"] = null;
+        this.app = createElement(this.$current_vdom, this);
+        if (this.el instanceof Element)
+          this.el.parentElement.replaceChild(this.app, this.el);
       }
-      renderedvdom = this.renderGenerators(this.$vdom);
-      renderedvdom = this.renderBindings(renderedvdom);
-      this.$current_vdom = this.renderObject(renderedvdom);
-      this.$current_vdom["component_uuid"] = null;
-      this.$current_vdom["parent_component_uuid"] = null;
-      this.app = createElement(this.$current_vdom, this, null);
-      this.el.parentElement.replaceChild(this.app, this.el);
 
       for (const id in this._component_memo) {
         if (Object.hasOwnProperty.call(this._component_memo, id)) {
@@ -325,7 +363,8 @@ class VDom {
 
   renderObject(
     _object,
-    parent_object = { component_uuid: null, parent_component_uuid: null }
+    parent_object = { component_uuid: null, parent_component_uuid: null },
+    is_root = null
   ) {
     let obj = JSON.parse(JSON.stringify(_object));
     if (typeof obj === "string") {
@@ -390,6 +429,6 @@ class VDom {
   }
 }
 
-VDom.component = VDom.prototype.addComponent;
+VDom.prototype.component = VDom.prototype.addComponent;
 
 export { VDom };

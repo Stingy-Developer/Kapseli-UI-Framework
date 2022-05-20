@@ -1,9 +1,17 @@
-const isArray = (arr) => {
+import { VDom } from "..";
+import { KapseliNodeProp } from "../../types/KapseliNode";
+
+const isArray = (arr: any): boolean => {
   return Array.isArray(arr);
 };
 
-function renderObject(_object, rep, data, self) {
-  let obj = JSON.parse(JSON.stringify(_object));
+function renderObject(
+  _object: KapseliNodeProp | string,
+  rep: string,
+  data: string,
+  self: any
+) {
+  let obj: KapseliNodeProp = JSON.parse(JSON.stringify(_object));
 
   if (obj.tag == "DATA") {
     let vdata = obj.props["k-data"];
@@ -58,40 +66,43 @@ function renderObject(_object, rep, data, self) {
   return obj;
 }
 
-export function setKFor(obj) {
-  obj.addGenerator("k-for", function (expression, vdom, self) {
-    let exps = expression.split(" in ");
-    if (exps.length < 2)
-      throw `SyntaxError: Wrong expression for 'k-for' in '${vdom.tag}' element!`;
+export function setKFor(obj: VDom) {
+  obj.addGenerator(
+    "k-for",
+    function (expression: string, vdom: KapseliNodeProp, self: any) {
+      let exps = expression.split(" in ");
+      if (exps.length < 2)
+        throw `SyntaxError: Wrong expression for 'k-for' in '${vdom.tag}' element!`;
 
-    let data = self.getData(exps[1]);
-    if (data === "")
-      throw `DataError: There is this data '${exps[1]}' in 'datas' for '${vdom.tag}' element!`;
+      let data = self.getData(exps[1]);
+      if (data === "")
+        throw `DataError: There is this data '${exps[1]}' in 'datas' for '${vdom.tag}' element!`;
 
-    let childs = vdom.children;
-    let rendered_childs = [];
-    if (isArray(data)) {
-      for (let i = 0; i < data.length; i++) {
-        self.notListenedData[`${exps[1].replace(".", "_")}_${exps[0]}_${i}`] =
-          data[i];
-        if (childs.length > 0) {
-          for (let k = 0; k < childs.length; k++) {
-            const child = childs[k];
-            rendered_childs.push(
-              renderObject(
-                child,
-                exps[0],
-                `${exps[1].replace(".", "_")}_${exps[0]}_${i}`,
-                self
-              )
-            );
+      let childs = vdom.children;
+      let rendered_childs = [];
+      if (isArray(data)) {
+        for (let i = 0; i < data.length; i++) {
+          self.notListenedData[`${exps[1].replace(".", "_")}_${exps[0]}_${i}`] =
+            data[i];
+          if (childs.length > 0) {
+            for (let k = 0; k < childs.length; k++) {
+              const child = childs[k];
+              rendered_childs.push(
+                renderObject(
+                  child,
+                  exps[0],
+                  `${exps[1].replace(".", "_")}_${exps[0]}_${i}`,
+                  self
+                )
+              );
+            }
           }
         }
       }
-    }
 
-    vdom.children = rendered_childs;
-  });
+      vdom.children = rendered_childs;
+    }
+  );
 }
 
 /**
