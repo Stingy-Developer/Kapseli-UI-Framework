@@ -9,18 +9,15 @@ Licensed under ${
 } (https://github.com/Stingy-Developer/Kapseli-UI-Framework/blob/main/LICENSE)`;
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/index.ts",
   output: {
-    path: path.resolve(__dirname, "dist/js"),
+    path: path.resolve(__dirname, "dist/bundle"),
     filename: "bundle.js",
     library: {
       name: "Kapseli",
       type: "var",
       export: "default",
     },
-  },
-  devServer: {
-    contentBase: "./dist",
   },
   module: {
     rules: [
@@ -31,8 +28,16 @@ module.exports = {
           loader: "babel-loader", // specify the loader
         },
       },
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
     ],
   },
   watch: true,
   plugins: [new webpack.BannerPlugin(banner)],
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
 };
