@@ -1,8 +1,9 @@
-class Data {
-  constructor(data) {
+export class Data {
+  data: any;
+  constructor(data: any) {
     this.data = data || {};
   }
-  get(key) {
+  get(key: string) {
     if (key === undefined) {
       return this.data;
     }
@@ -12,33 +13,29 @@ class Data {
     }
     return false;
   }
-  set(key, value = "") {
-    if (key !== undefined) {
-      this.data[key] = value;
-    }
+  set(key: string, value: any) {
+    this.data[key] = value;
   }
-  update(key, value = "") {
+  update(key: string, value: any) {
     if (this.has(key)) {
       this.set(key, value);
     }
   }
-  delete(key) {
+  delete(key: string) {
     if (this.has(key)) {
       delete this.data[key];
     }
   }
-  has(key) {
+  has(key: string) {
     return key in this.data ? true : false;
   }
   dump() {
     return JSON.stringify(this.data);
   }
-  load(data) {
+  load(data: any) {
     this.data = {
       ...this.data,
       ...JSON.parse(data),
     };
   }
 }
-
-export { Data };
