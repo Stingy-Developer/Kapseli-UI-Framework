@@ -1,10 +1,25 @@
 import { Component } from "./Component";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
+import { JSX } from "../vdom/jsx";
 
-class FloatPanel extends Component {
-  constructor({ location = "start", id, title }) {
+export interface FloatPanelProp {
+  id: string;
+  location?: string;
+  title: string;
+}
+
+export interface StaticPanelProp {
+  id: string;
+  location?: string;
+  title: string;
+  uri: string;
+}
+
+export class FloatPanel extends Component {
+  $options: any;
+  constructor({ location = "start", id, title }: FloatPanelProp) {
     super({
-      use_memo: id,
+      useMemo: id,
       data: {
         location: "panel panel-" + location,
         title,
@@ -28,24 +43,24 @@ class FloatPanel extends Component {
         </div>
       ),
       methods: {
-        panel_hide: (e) => {
+        panel_hide: (_e) => {
           this.$options.hide();
         },
         panel_show: () => {
           this.$options.show();
         },
-      },
-      mounted() {
-        this.$options = new Offcanvas(document.getElementById(id));
+        mounted() {
+          this.$options = new Offcanvas(document.getElementById(id));
+        },
       },
     });
   }
 }
 
-class StaticPanel extends Component {
-  constructor({ location = "start", title, id, uri }) {
+export class StaticPanel extends Component {
+  constructor({ location = "start", title, id, uri }: StaticPanelProp) {
     super({
-      use_memo: id,
+      useMemo: id,
       data: {
         location: "static-panel static-panel-" + location,
         title,
@@ -70,5 +85,3 @@ class StaticPanel extends Component {
     });
   }
 }
-
-export { FloatPanel, StaticPanel };

@@ -1,17 +1,15 @@
 import { Component } from "./Component";
+import { JSX } from "../vdom/jsx";
 
 export class Provider extends Component {
   constructor({ stylesheet_url }) {
     super({
-      use_memo: "provider",
-      data: {},
+      useMemo: "provider",
       template: (
         <div id="app_provider">
           <slot></slot>
         </div>
       ),
-      methods: {},
-      props: {},
       mounted: () => {
         const style = document.createElement("link");
 

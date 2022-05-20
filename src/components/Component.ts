@@ -1,10 +1,30 @@
 import { VDom } from "../vdom/index";
 import onChange from "on-change";
+import {
+  KapseliComponentConfigProp,
+  KapseliFetchMethodProp,
+} from "../types/Component";
+import { VoidFunc } from "../types/Utility";
+import { KapseliMethodObj } from "../types/View";
+import { KapseliNodeProp, KapseliNodePropsProp } from "../types/KapseliNode";
 
 export class Component extends VDom {
-  constructor(conf) {
+  fetchMethod: KapseliFetchMethodProp;
+  mounted: VoidFunc;
+  updated: VoidFunc;
+  props: string[];
+  $props: any;
+  component_uuid: string;
+  comp_methods: KapseliMethodObj;
+  _data: any;
+  inheritance: { new (): Object }[];
+  useMemo: string | false;
+  self: VDom;
+  slots: string | KapseliNodeProp[];
+
+  constructor(conf: KapseliComponentConfigProp) {
     super({});
-    let config = {
+    let config: KapseliComponentConfigProp = {
       props: [],
       methods: {},
       data: {},
@@ -13,17 +33,17 @@ export class Component extends VDom {
       mounted: () => {},
       updated: () => {},
       inheritances: [],
-      use_memo: false,
+      useMemo: false,
       ...conf,
     };
 
     this.fetchMethod = config.fetchMethod
       ? {
-          "data-kapseli-fetch-mode": config.fetchMethod.fetch_mode
+          "data-kapseli-fetch-mode": config.fetchMethod.fetchMode
             ? "on"
             : "off",
           "data-kapseli-fetch-method": config.fetchMethod.fetch.method,
-          "data-kapseli-fetch-url": config.fetchMethod.fetch.url,
+          "data-kapseli-fetch-uri": config.fetchMethod.fetch.uri,
           "data-kapseli-fetch-opts": JSON.stringify(
             config.fetchMethod.fetch.opts
           ),
@@ -35,16 +55,16 @@ export class Component extends VDom {
     this.props = config.props ? config.props : [];
     this.$props = {};
     this.$directives = {};
-    this.methods = {};
+    this.comp_methods = {};
 
     this.component_uuid = "__UUID__" + Math.random().toString(16).substring(2);
 
-    this.methods = config.methods ? config.methods : {};
+    this.comp_methods = config.methods ? config.methods : {};
     this.notListenedData = {};
     this.$components = {};
     this._data = config.data || {};
     this.inheritance = config.inheritances;
-    this.use_memo = config.use_memo;
+    this.useMemo = config.useMemo;
 
     if (typeof config.template === "string") {
       let el = document.createElement("div");
@@ -58,7 +78,7 @@ export class Component extends VDom {
     }
   }
 
-  _beautyVdom(vdom) {
+  _beautyVdom(vdom: KapseliNodeProp | string) {
     if (vdom && typeof vdom !== "string") {
       let newVDOM = {
         tag: vdom.tag,
@@ -77,7 +97,7 @@ export class Component extends VDom {
     }
   }
 
-  getData(key_str) {
+  getData(key_str: string) {
     let data = this.data ? this.data : this._data;
 
     if (key_str === undefined) {
@@ -96,49 +116,53 @@ export class Component extends VDom {
     );
   }
 
-  renderProps(props) {
-    try {
-      if (this.el instanceof HTMLElement) {
-        for (const key in props) {
-          if (Object.hasOwnProperty.call(props, key)) {
-            const prop_value = props[key];
-            this.el.setAttribute(key, prop_value);
+  renderProps(props: KapseliNodePropsProp) {
+    if (this.el) {
+      try {
+        if (this.el instanceof Element) {
+          for (const key in props) {
+            if (Object.hasOwnProperty.call(props, key)) {
+              const prop_value = props[key];
+              this.el.setAttribute(key, prop_value);
+            }
           }
+        } else {
+          this.el.props = {
+            ...this.el.props,
+            ...props,
+          };
         }
-      } else {
-        this.el.props = {
-          ...this.el.props,
-          ...props,
-        };
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
   }
 
   renderVDom() {
-    let renderedvdom = false;
+    let renderedvdom;
     if (!this.app) {
-      try {
-        if (this.el instanceof HTMLElement) {
-          this.$vdom = this._getVdom(this.el);
-        } else {
-          this.$vdom = this._beautyVdom(this.el);
+      if (this.el) {
+        try {
+          if (this.el instanceof Element) {
+            this.$vdom = this._getVdom(this.el);
+          } else {
+            this.$vdom = this._beautyVdom(this.el);
+          }
+        } catch (error) {
+          console.error(`Compiling Error=> ${error}`);
         }
-      } catch (error) {
-        console.error(`Compiling Error=> ${error}`);
+
+        renderedvdom = this.renderGenerators(this.$vdom);
+        renderedvdom = this.renderBindings(renderedvdom);
+
+        this.$current_vdom = this.renderObject(
+          renderedvdom,
+          {
+            component_uuid: this.component_uuid,
+          },
+          true
+        );
       }
-
-      renderedvdom = this.renderGenerators(this.$vdom);
-      renderedvdom = this.renderBindings(renderedvdom);
-
-      this.$current_vdom = this.renderObject(
-        renderedvdom,
-        {
-          component_uuid: this.component_uuid,
-        },
-        true
-      );
     } else {
       renderedvdom = this.renderGenerators(this.$vdom);
       this.$current_vdom = this.renderObject(
@@ -151,7 +175,7 @@ export class Component extends VDom {
     }
   }
 
-  renderObject(_object, parent_object, is_root) {
+  renderObject(_object, parent_object, is_root = false) {
     let obj = JSON.parse(JSON.stringify(_object));
 
     if (typeof obj === "string") {
@@ -172,8 +196,8 @@ export class Component extends VDom {
           this.component_uuid
         );
         obj = comp.vdom;
-        this.methods = {
-          ...this.methods,
+        this.comp_methods = {
+          ...this.comp_methods,
           ...comp.methods,
         };
         return obj;
@@ -252,7 +276,7 @@ export class Component extends VDom {
         parent_component_uuid,
         component_uuid: this.component_uuid,
       },
-      methods: this.methods,
+      methods: this.comp_methods,
       mounted: this.mounted,
       updated: this.updated,
     };
@@ -266,6 +290,7 @@ export class Component extends VDom {
         let vdom = new this.inheritance[i]();
         slotVDom = {
           ...vdom,
+          //@ts-ignore
           children: Array.isArray(slotVDom) ? slotVDom : [slotVDom],
         };
       }
