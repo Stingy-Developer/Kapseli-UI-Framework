@@ -1,4 +1,6 @@
-const className = (classList_obj = {}) => {
+import { ClassListObjProps, StyleListObjProps } from "../types/Utility";
+
+export const className = (classList_obj: ClassListObjProps) => {
   let enable_classes = [];
   for (const klass in classList_obj) {
     if (Object.hasOwnProperty.call(classList_obj, klass)) {
@@ -11,7 +13,7 @@ const className = (classList_obj = {}) => {
   return enable_classes.join(" ");
 };
 
-const style = (style_obj = {}) => {
+export const style = (style_obj: StyleListObjProps) => {
   let styles = [];
   for (const key in style_obj) {
     if (Object.hasOwnProperty.call(style_obj, key)) {
@@ -20,5 +22,3 @@ const style = (style_obj = {}) => {
   }
   return styles.join(";");
 };
-
-export { className, style };

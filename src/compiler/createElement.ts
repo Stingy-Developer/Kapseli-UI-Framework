@@ -1,6 +1,8 @@
+import { KapseliNodeProp } from "../types/KapseliNode";
+
 const BLACLIST = ["COMMENT", "SCRIPT"];
 
-const createElement = (node, klass) => {
+export const createElement = (node: KapseliNodeProp | string, klass: any) => {
   if (node) {
     if (typeof node == "string") {
       return document.createTextNode(node);
@@ -32,8 +34,8 @@ const createElement = (node, klass) => {
             const dir = dirs[key];
             if (!klass.getDirective(key)) {
               klass.addDirective(key, {
-                render: function (el, cb) {
-                  el.addEventListener(key.substr(1), cb);
+                render: function (el: Element, cb: (e: Event) => void) {
+                  el.addEventListener(key.substring(1), cb);
                 },
               });
             }
@@ -74,5 +76,3 @@ const createElement = (node, klass) => {
     return document.createTextNode("");
   }
 };
-
-export { createElement };
