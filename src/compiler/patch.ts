@@ -77,8 +77,7 @@ export const patch = (
   oldNode: KapseliNodeProp | string,
   klass: any
 ) => {
-  if (!el) return false;
-  if (!newNode) {
+  if (newNode === undefined) {
     el.remove();
   } else {
     if (typeof newNode == "string") {

@@ -411,7 +411,8 @@ class VDom {
 
     if (obj.tag == "DATA") {
       let value = this.getData(obj.props["k-data"]);
-      if (value !== "") {
+
+      if (value.length > 0) {
         obj = String(value);
       }
     } else if (typeof obj !== "string") {

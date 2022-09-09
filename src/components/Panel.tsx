@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component } from "./Component";
 import Offcanvas from "bootstrap/js/dist/offcanvas";
 import { JSX } from "../vdom/jsx";
@@ -49,9 +50,9 @@ export class FloatPanel extends Component {
         panel_show: () => {
           this.$options.show();
         },
-        mounted() {
-          this.$options = new Offcanvas(document.getElementById(id));
-        },
+      },
+      mounted() {
+        this.$options = new Offcanvas(document.getElementById(id));
       },
     });
   }
