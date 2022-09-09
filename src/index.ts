@@ -16,6 +16,4 @@ window.jsx = JSX.createElement;
 
 import { KapseliProp } from "./types/Kapseli";
 
-export default {
-  ...Kapseli,
-};
+export { Kapseli };
