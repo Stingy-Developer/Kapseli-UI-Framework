@@ -6,8 +6,10 @@
     "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist/js",
+    "outDir": "./dist",
+    "declaration": true,
     "reactNamespace": "JSX",
+    "declarationDir": "./dist/bundle/@types"
   },
   "lib": [
     "es2015"

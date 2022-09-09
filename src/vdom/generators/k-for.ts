@@ -104,7 +104,3 @@ export function setKFor(obj: VDom) {
     }
   );
 }
-
-/**
- * rendering k-for element
- */

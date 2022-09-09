@@ -1,10 +1,10 @@
-import { Component } from "../components/Component";
-import { Plugin } from "../plugin/index";
-import { Command } from "../command/index";
-import { Event } from "../event";
-import { I18n } from "../i18n";
-import { StorageManager } from "../storage";
-import { KapseliComponentConfigProp } from "./Component";
+import type { Component } from "../components/Component";
+import type { Plugin } from "../plugin/index";
+import type { Command } from "../command/index";
+import type { Event } from "../event";
+import type { I18n } from "../i18n";
+import type { StorageManager } from "../storage";
+import type { KapseliComponentConfigProp } from "./Component";
 
 export interface KapseliConfig {
   event?: any;

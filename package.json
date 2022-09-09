@@ -2,11 +2,14 @@
   "name": "@stingydev/kapseli",
   "version": "1.0.9",
   "description": "This project is redesigned to update the aim of the project. You can see details for new design at [Wiki Page](https://github.com/Swindler36/Kapseli-UI-Framework/wiki).",
-  "main": "js/index.js",
+  "main": "dist/bundle/bundle.js",
+  "types": "dist/bundle/@types/bundle.d.ts",
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
-    "test": "jest"
+    "test": "jest",
+    "build:css": "npx node-sass scss/bootstrap.scss dist/css/style.css && npx node-sass scss/bootstrap.scss dist/css/style.min.css --output-style compressed",
+    "export": "npm run build:css && npm run build"
   },
   "author": "stingydev <stingydeveloper@gmail.com>",
   "license": "MIT",
@@ -19,8 +22,10 @@
     "backbone": "^1.4.0",
     "bootstrap": "^5.1.0",
     "core-js": "^3.16.2",
+    "node-sass": "^7.0.3",
     "on-change": "^3.0.2",
-    "source-list-map": "^2.0.1"
+    "source-list-map": "^2.0.1",
+    "typescript-declaration-webpack-plugin": "^0.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

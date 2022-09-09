@@ -8,6 +8,7 @@ Licensed under ${
   PACKAGE.license
 } (https://github.com/Stingy-Developer/Kapseli-UI-Framework/blob/main/LICENSE)`;
 
+const TypescriptDeclarationPlugin = require("typescript-declaration-webpack-plugin");
 module.exports = {
   entry: "./src/index.ts",
   output: {
@@ -36,7 +37,14 @@ module.exports = {
     ],
   },
   watch: true,
-  plugins: [new webpack.BannerPlugin(banner)],
+  plugins: [
+    new webpack.BannerPlugin(banner),
+    new TypescriptDeclarationPlugin({
+      out: "@types/bundle.d.ts",
+      removeComments: false,
+      removeMergedDeclarations: false,
+    }),
+  ],
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
