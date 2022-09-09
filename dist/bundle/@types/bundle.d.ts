@@ -1,6 +1,5 @@
 export declare global {
     interface Window {
-        Kapseli: KapseliProp;
         jsx: (tag: string, props: Obj, ...children: Obj[]) => {
             tag: string;
             props: Obj;
@@ -8,7 +7,7 @@ export declare global {
         } | Obj[];
     }
 }
-export { Kapseli };
+export { Kapseli } from "./app/app";
 
 export declare const Kapseli: KapseliProp;
 
@@ -361,7 +360,7 @@ export interface KapseliProp {
     Storage: StorageManager;
     Route: any;
     Command: Command;
-    View: any;
+    View: VDom;
     init: (configs: KapseliConfig) => KapseliProp;
     refresh: (configs: KapseliConfig) => void;
     store: (data: any) => void;

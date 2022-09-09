@@ -5,6 +5,7 @@ import type { Event } from "../event";
 import type { I18n } from "../i18n";
 import type { StorageManager } from "../storage";
 import type { KapseliComponentConfigProp } from "./Component";
+import { VDom } from "../vdom";
 export interface KapseliConfig {
     event?: any;
     i18n?: any;
@@ -21,7 +22,7 @@ export interface KapseliProp {
     Storage: StorageManager;
     Route: any;
     Command: Command;
-    View: any;
+    View: VDom;
     init: (configs: KapseliConfig) => KapseliProp;
     refresh: (configs: KapseliConfig) => void;
     store: (data: any) => void;

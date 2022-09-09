@@ -11,8 +11,7 @@ export class I18n {
   config: I18nConfigProps;
   constructor(config: I18nConfigProps, self: KapseliProp) {
     this.config = {
-      locale: "en",
-      messages: {},
+      ...{ locale: "en", messages: {} },
       ...config,
     };
     this.event = self.Event;

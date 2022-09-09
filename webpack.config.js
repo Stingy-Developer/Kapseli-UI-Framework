@@ -14,11 +14,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/bundle"),
     filename: "bundle.js",
-    // library: {
-    //   name: "Kapseli",
-    //   type: "var",
-    //   export: "default",
-    // },
+    libraryTarget: "umd",
+    library: "kapseli",
   },
   module: {
     rules: [

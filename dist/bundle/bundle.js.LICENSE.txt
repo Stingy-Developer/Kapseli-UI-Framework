@@ -35,7 +35,7 @@
   */
 
 /*!
- * @stingydev/kapseli v1.0.10 (https://github.com/Swindler36/Kapseli-UI-Framework#readme)
+ * @stingydev/kapseli v1.0.11 (https://github.com/Swindler36/Kapseli-UI-Framework#readme)
  * Copyright 2021-2022 The Kapseli Authors (https://github.com/Stingy-Developer/Kapseli-UI-Framework/graphs/contributors)
  * Licensed under MIT (https://github.com/Stingy-Developer/Kapseli-UI-Framework/blob/main/LICENSE)
  */
