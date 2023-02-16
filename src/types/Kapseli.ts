@@ -8,12 +8,12 @@ import type { KapseliComponentConfigProp } from "./Component";
 import { VDom } from "../vdom";
 
 export interface KapseliConfig {
-  event?: any;
+  event?: Event;
   i18n?: any;
-  storage?: any;
-  command?: any;
+  storage?: StorageManager;
+  command?: Command;
   route?: any;
-  view?: any;
+  view?: VDom;
   plugins?: any;
 }
 
