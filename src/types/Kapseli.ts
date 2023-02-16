@@ -1,18 +1,19 @@
-import { Component } from "../components/Component";
-import { Plugin } from "../plugin/index";
-import { Command } from "../command/index";
-import { Event } from "../event";
-import { I18n } from "../i18n";
-import { StorageManager } from "../storage";
-import { KapseliComponentConfigProp } from "./Component";
+import type { Component } from "../components/Component";
+import type { Plugin } from "../plugin/index";
+import type { Command } from "../command/index";
+import type { Event } from "../event";
+import type { I18n } from "../i18n";
+import type { StorageManager } from "../storage";
+import type { KapseliComponentConfigProp } from "./Component";
+import { VDom } from "../vdom";
 
 export interface KapseliConfig {
-  event?: any;
+  event?: Event;
   i18n?: any;
-  storage?: any;
-  command?: any;
+  storage?: StorageManager;
+  command?: Command;
   route?: any;
-  view?: any;
+  view?: VDom;
   plugins?: any;
 }
 
@@ -23,7 +24,7 @@ export interface KapseliProp {
   Storage: StorageManager;
   Route: any;
   Command: Command;
-  View: any;
+  View: VDom;
   init: (configs: KapseliConfig) => KapseliProp;
 
   refresh: (configs: KapseliConfig) => void;

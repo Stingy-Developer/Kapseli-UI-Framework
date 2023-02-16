@@ -1,4 +1,4 @@
-import { KapseliNodeProp } from "./KapseliNode";
+import type { KapseliNodeProp } from "./KapseliNode";
 
 export interface KapseliDirectiveObj {
   render: (el: Element, cb: (e: Event) => void) => void;

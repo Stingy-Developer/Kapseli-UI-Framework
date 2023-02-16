@@ -1,4 +1,4 @@
-import { KapseliMethodObj } from "./View";
+import type { KapseliMethodObj } from "./View";
 
 type VoidFunc = () => void;
 
